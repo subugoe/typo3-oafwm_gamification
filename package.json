@@ -1,0 +1,32 @@
+{
+  "name": "oafwm_gamification",
+  "version": "0.0.1",
+  "description": "Adjustments for ipoa gamification",
+  "private": true,
+  "repository": "http://github.com/subugoe/typo3-tmpl_ipoa",
+  "author": "Sibylle Nägle",
+  "license": "AGPL-3.0",
+  "devDependencies": {
+    "@babel/preset-env": "^7.2.0",
+    "autoprefixer": "^9.6.1",
+    "babel-cli": "^6.26.0",
+    "cypress": "^3.4.0",
+    "eslint": "^5.10.0",
+    "node-sass": "^4.11.0",
+    "npmrc": "^1.1.1",
+    "postcss": "^6.0.21",
+    "postcss-cli": "^4.1.1",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.6"
+  },
+  "scripts": {
+    "babel": "./node_modules/.bin/babel Resources/Private/JavaScript/gamification.js -o Resources/Public/JavaScript/gamification.js",
+    "lintJs": "./node_modules/.bin/eslint Resources/Private/JavaScript/*.js --fix",
+    "createCss": "./node_modules/.bin/node-sass --source-map true Resources/Private/Scss/Gamification.scss Resources/Public/Css/gamification.css; ./node_modules/.bin/postcss --use autoprefixer -b 'last 2 versions' Resources/Public/Css/gamification.css -o Resources/Public/Css/gamification.css",
+    "createJs": "npm run lintJs && npm run babel",
+    "devAll": "npm run createCss && npm run createJs"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}

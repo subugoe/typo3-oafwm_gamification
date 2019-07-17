@@ -1,0 +1,13 @@
+plugin.tx_substaff {
+    view {
+        templateRootPath = EXT:oafwm_gamification/Resources/Private/Templates/
+        partialRootPath = EXT:oafwm_gamification/Resources/Private/Partials/
+        layoutRootPath = EXT:oafwm_gamification/Resources/Private/Layouts/
+    }
+
+}
+
+
+plugin.tx_ttaddress {
+
+}

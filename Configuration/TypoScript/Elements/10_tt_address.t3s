@@ -1,0 +1,18 @@
+
+plugin.tx_ttaddress {
+    view {
+        templateRootPaths {
+            20 = EXT:oafwm_gamification/Resources/Private/TtAddress/Templates/
+        }
+
+        partialRootPaths {
+            20 = EXT:oafwm_gamification/Resources/Private/TtAddress/Partials/
+        }
+
+        layoutRootPaths {
+            20 = EXT:oafwm_gamification/Resources/Private/TtAddress/Layouts/
+        }
+    }
+    settings.hidePagination = 1
+}
+

@@ -1,0 +1,20 @@
+{
+    "name": "subugoe/oafwm-gamification",
+    "type": "typo3-cms-extension",
+    "description": "Extension for gamification elements of IPOA",
+    "homepage": "http://open-access.net",
+    "license": ["GPL-2.0-or-later"],
+    "keywords": ["TYPO3 CMS", "sub", "ipoa", "oafwm"],
+    "replace": {
+        "oafwm_gamification": "self.version"
+    },
+    "autoload": {
+        "psr-4": {
+            "Subugoe\\OafwmGamification\\": "Classes/"
+        }
+    },
+    "require": {
+        "friendsoftypo3/tt-address": "^4.3",
+        "friendsoftypo3/frontend-editing": "^1.4"
+    }
+}

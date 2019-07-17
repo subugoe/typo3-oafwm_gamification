@@ -1,0 +1,5 @@
+config.frontend_editing = 1
+
+[globalVar = BE_USER|user|usergroup = 8]
+    #page.includeCSS.file193 = typo3conf/ext/tmpl_ipoa/Resources/Public/Css/cop.css
+[global]

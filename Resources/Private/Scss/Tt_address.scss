@@ -1,0 +1,36 @@
+.tt_address_list {
+    display: flex;
+    justify-content: space-between;
+}
+.tt_address_list .vcard {
+    display: flex;
+    width: 400px;
+    height: 400px;
+    margin: 40px 0;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.tt_address_list .vcard a {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.tt_address_list .vcard img {
+    display: flex;
+}
+
+.tt_address_list .vcard .addressName {
+    display: flex;
+}
+
+.tt_address_detail figure {
+    width: 300px;
+    margin: 0;
+}
+
+.tt_address_detail figure img {
+    width: 100%;
+    height: auto;
+}
