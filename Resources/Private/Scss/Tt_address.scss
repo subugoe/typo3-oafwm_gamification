@@ -3,26 +3,26 @@
     justify-content: space-between;
 }
 .tt_address_list .vcard {
-    display: flex;
-    width: 400px;
-    height: 400px;
-    margin: 40px 0;
-    align-items: flex-start;
-    flex-direction: column;
+    // display: flex;
+    // width: 400px;
+    // height: 400px;
+    // margin: 40px 0;
+    // align-items: flex-start;
+    // flex-direction: column;
 }
 
 .tt_address_list .vcard a {
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
+    // display: flex;
+    // justify-content: center;
+    // overflow: hidden;
 }
 
 .tt_address_list .vcard img {
-    display: flex;
+    // display: flex;
 }
 
 .tt_address_list .vcard .addressName {
-    display: flex;
+    // display: flex;
 }
 
 .tt_address_detail figure {
@@ -32,5 +32,52 @@
 
 .tt_address_detail figure img {
     width: 100%;
+    height: auto;
+}
+
+.tt_address .vcard {
+    width: calc(100% / 3);
+    padding: 10px;
+    display: block;
+    height: 300px;
+}
+
+.image-center-horizontal {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-width: 1px;
+    border-style: ridge;
+    border-color: darkgray;
+}
+
+.image-center-vertical {
+    position: relative;
+    overflow: hidden;
+}
+
+.image-center-horizontal img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: auto;
+    width: 100%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+
+.tt_address_list .addressName {
+    width: 200px;
+}
+
+.tt_address_list .addressImage {
+    display: flex;
+}
+
+.tx-ttaddress .badges img {
+    display: flex;
+    width: 200px;
     height: auto;
 }

@@ -4,11 +4,13 @@
 										 title="{address.fullName}"
 										 class="addressImage"
 										 pageUid="{settings.singlePid}">
-				<f:if condition="{address.image}">
+					<div class="image-center-horizontal">
+						<f:if condition="{address.image}">
 					<f:media file="{address.firstImage}" width="400" class="img-fluid img-thumbnail rounded"
 									 alt="{img.originalResource.alt}"
 									 title="{address.fullName}"/>
 				</f:if>
+					</div>
 			</f:link.action>
 	<div class="addressName">
 		<h3>{address.fullName}</h3>

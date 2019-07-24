@@ -3,7 +3,7 @@ jQuery(() => {
   /**
    * remove edit icons for tt_address plugin page
    */
-  if (window.location.pathname === '/ueber-uns/autoren') {
+  if (window.location.pathname === '/ueber-uns/autoren' || window.location.pathname === '/ueber-uns/autoren/autorin') {
     jQuery('.t3-frontend-editing__inline-actions span[title^="Edit"]').css('display', 'none');
     console.log('Authoren');
   }

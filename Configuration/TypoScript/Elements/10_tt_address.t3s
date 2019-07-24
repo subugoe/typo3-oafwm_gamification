@@ -16,3 +16,19 @@ plugin.tx_ttaddress {
     settings.hidePagination = 1
 }
 
+config.tx_extbase {
+    objects {
+        FriendsOfTYPO3\TtAddress\Domain\Model\Address {
+            className = Subugoe\OafwmGamification\Domain\Model\Address
+        }
+    }
+    persistence {
+        classes {
+            Subugoe\OafwmGamification\Domain\Model\Address {
+                mapping {
+                    tableName = tt_address
+                }
+            }
+        }
+    }
+}

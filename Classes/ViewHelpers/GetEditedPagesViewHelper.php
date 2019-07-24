@@ -27,7 +27,11 @@ namespace Subugoe\OafwmGamification\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ******************************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+
 
 /**
  * Class GetEditedPagesViewHelper
@@ -36,6 +40,49 @@ use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 class GetEditedPagesViewHelper extends AbstractViewHelper
 {
 
+    // SELECT pid FROM `sys_log` WHERE userid = 3 AND tablename = "tt_content"
+    protected function getPagesID($id)
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_log');
+        $pageIds = $queryBuilder
+            ->select('event_pid')
+            ->from('sys_log')
+            ->where(
+                $queryBuilder->expr()->eq('userid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->neq('event_pid', $queryBuilder->createNamedParameter('-1'))
+            )
+            ->execute();
+        // only use unique ids
+        $pageArray = [];
+        foreach ($pageIds as $page) {
+            if (in_array($page, $pageArray)) {} else {
+                array_push($pageArray, $page);
+            }
+        };
+        return array_merge($pageArray);
+    }
+
+    protected function getPageName($pageId)
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $pageName = $queryBuilder
+            ->select('title','uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT))
+            )
+            ->execute()->fetchAll();
+        return $pageName;
+    }
+
+    /**
+     * Initialize all arguments. You need to override this method and call
+     * $this->registerArgument(...) inside this method, to register all your arguments.
+     *
+     * @api
+     */
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -47,7 +94,14 @@ class GetEditedPagesViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        return "Isso";
+        $uid = $this->arguments['uid'];
+        $pageNames = [];
+        $pages = $this->getPagesID($uid);
+        foreach ($pages as $pageId)
+        {
+            array_push($pageNames, $this->getPageName($pageId['event_pid']));
+        }
+        return $pageNames;
     }
 }
 
