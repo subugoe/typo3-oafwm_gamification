@@ -2,20 +2,32 @@
 			xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
-<div class="badges">
-	<h3>Badges</h3>
+<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} > 0">
 
-	<div class="badge-images">
-		<f:switch expression="{address.userGroupname}">
-			<f:case value="Badges">
-				<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/SingleEdit.png"/>
-			</f:case>
-			<f:case value="Levels">
-				<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/MultiEdits.png"/>
-			</f:case>
-			<f:case value="Controlgroup">
-				<f:comment>Nothing</f:comment>
-			</f:case>
-		</f:switch>
+	<div class="badges">
+		<h3>Badges</h3>
+		<div class="badge-images">
+			<f:switch expression="{address.userGroupname}">
+
+				<f:case value="Badges">
+					<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} == 1">
+						<f:then>
+							<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/SingleEdit.png"/>
+						</f:then>
+						<f:else>
+							<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/MultiEdits.png"/>
+						</f:else>
+					</f:if>
+				</f:case>
+
+				<f:case value="Levels">
+					<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/MultiEdits.png"/>
+				</f:case>
+
+				<f:case value="Controlgroup">
+					<f:comment>Nothing</f:comment>
+				</f:case>
+			</f:switch>
+		</div>
 	</div>
-</div>
+</f:if>
