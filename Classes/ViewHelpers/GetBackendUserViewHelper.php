@@ -39,18 +39,12 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 class GetBackendUserViewHelper extends AbstractViewHelper
 {
 
-
-    public function initializeArguments()
-    {
-        parent::initializeArguments();
-    }
-
     /**
      * @return string
      */
     public function render()
     {
         // doesn't work
-        return ['GLOBALS']['BE_USER']['user']['username'];
+        return $GLOBALS['BE_USER']->user['uid'];
     }
 }
