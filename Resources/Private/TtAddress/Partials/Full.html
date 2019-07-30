@@ -2,15 +2,15 @@
 			data-namespace-typo3-fluid="true">
 
 <div class="vcard tt_address_detail" itemscope itemtype="http://schema.org/Person">
-	<h4 itemprop="name">
+	<h2 itemprop="name" class="name">
 		<core:contentEditable table="tt_address" field="first_name" uid="{address.uid}">
 			{address.firstName}
 		</core:contentEditable>
-		&nbsp;
+
 		<core:contentEditable table="tt_address" field="last_name" uid="{address.uid}">
 			{address.lastName}
 		</core:contentEditable>
-	</h4>
+	</h2>
 	<f:render section="position" partial="Address" arguments="{_all}"/>
 
 
@@ -42,7 +42,7 @@
 </div>
 
 <f:render partial="EditedPages" arguments="{_all}"/>
-<f:comment><f:render partial="Badges" arguments="{_all}"/></f:comment>
+<f:render partial="Rewards" arguments="{_all}"/>
 
 <f:section name="content">
 	<f:if condition="{address.description}">

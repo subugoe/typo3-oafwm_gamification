@@ -25,6 +25,10 @@
     // display: flex;
 }
 
+.tt_address_detail .addressImage {
+    padding-left: 0;
+}
+
 .tt_address_detail figure {
     width: 300px;
     margin: 0;
@@ -76,8 +80,17 @@
     display: flex;
 }
 
-.tx-ttaddress .badges img {
+.tx-ttaddress .rewardImages {
+    display: flex;
+}
+
+.tx-ttaddress .rewardImages img {
     display: flex;
     width: 200px;
     height: auto;
+    padding: 12px;
+
+    &:first-of-type {
+        padding-left: 0;
+    }
 }

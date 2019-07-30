@@ -1,0 +1,50 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
+			data-namespace-typo3-fluid="true">
+
+<f:comment>Check, if user is logged in and is not part of the contoll group</f:comment>
+
+<f:if condition="{og:getBackendUser()} == {address.userUid} && {address.userGroupname} =! Controlgroup">
+	<h4>Rewards</h4>
+	<div class="rewardImages">
+		<f:switch expression="{address.userGroupname}">
+
+			<f:case value="Badges">
+				<f:image src="EXT:oafwm_gamification/Resources/Public/Images/SingleLogin.png"/>
+				<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} == 1">
+					<f:then>
+						<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/SingleEdit.png"
+										 alt="Schon einmal eingeloggt" title="Schon einmal eingeloggt" />
+					</f:then>
+					<f:else>
+						<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} > 1">
+							<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/MultiEdit.png"
+											 alt="Eine Seite bearbeitet" title="Eine Seite bearbeitet" />
+						</f:if>
+					</f:else>
+				</f:if>
+			</f:case>
+
+			<f:case value="Level">
+				<f:image src="EXT:oafwm_gamification/Resources/Public/Images/SingleLogin.png"
+								 alt="Schon einmal eingeloggt" title="Schon einmal eingeloggt" />
+				<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} == 1">
+					<f:then>
+						<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Levels/SingleEdit.png"
+										 alt="Schon einmal eingeloggt" title="Schon einmal eingeloggt" />
+					</f:then>
+					<f:else>
+						<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} > 1">
+							<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Levels/MultiEdit.png"
+											 alt="Schon häufiger eingeloggt" title="Schon häufiger eingeloggt" />
+						</f:if>
+					</f:else>
+				</f:if>
+			</f:case>
+
+			<f:case value="Controlgroup">
+				<f:comment>Nothing</f:comment>
+			</f:case>
+		</f:switch>
+	</div>
+</f:if>
