@@ -29,3 +29,10 @@
   // Remove dropzones from more and footer areas
   display: none !important;
 }
+
+
+
+.tt_address_detail .name .cke_editable:first-of-type {
+    // separate name elements
+    padding-right: 6px;
+}
