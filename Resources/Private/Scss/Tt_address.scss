@@ -1,32 +1,37 @@
 .tt_address_list {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
+
 .tt_address_list .vcard {
-    // display: flex;
-    // width: 400px;
-    // height: 400px;
-    // margin: 40px 0;
-    // align-items: flex-start;
-    // flex-direction: column;
+    padding-bottom: 20px;
+
+    &:hover .turnable {
+        transform: rotateY(180deg); /* Beim Mouse-Over wird die Szene umgedreht */
+    }
+}
+
+.tt_address_list .turnable .back {
+    display: flex;
+    background-color: #eee;
+    align-items: center;
+    justify-content: center;
+}
+
+.tt_address_list .back h3 {
+    text-align: center;
 }
 
 .tt_address_list .vcard a {
-    // display: flex;
-    // justify-content: center;
-    // overflow: hidden;
-}
-
-.tt_address_list .vcard img {
-    // display: flex;
-}
-
-.tt_address_list .vcard .addressName {
-    // display: flex;
+    background-color: #fff;
+    color: #333;
+    border-color: #eee;
 }
 
 .tt_address_detail .addressImage {
     padding-left: 0;
+    background-color: #fff;
 }
 
 .tt_address_detail figure {
@@ -53,7 +58,9 @@
     overflow: hidden;
     border-width: 1px;
     border-style: ridge;
-    border-color: darkgray;
+    border-color: #eee;
+    display: flex;
+    align-items: stretch;
 }
 
 .image-center-vertical {
@@ -67,9 +74,9 @@
     top: 50%;
     height: auto;
     width: 100%;
-    -webkit-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .tt_address_list .addressName {
@@ -81,16 +88,10 @@
 }
 
 .tx-ttaddress .rewardImages {
-    display: flex;
 }
 
 .tx-ttaddress .rewardImages img {
-    display: flex;
-    width: 200px;
+    width: 100px;
     height: auto;
-    padding: 12px;
-
-    &:first-of-type {
-        padding-left: 0;
-    }
+    padding: 12px 12px 12px 0;
 }
