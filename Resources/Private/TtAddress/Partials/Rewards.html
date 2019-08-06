@@ -8,7 +8,7 @@
 	editedPages: '{og:getEditedPages(uid:address.userUid)}',
 	numberOfEdits: '{og:getNumberOfEdits(uid:address.userUid)}'}">
 
-		<f:if condition="{backendUser.groupname}">
+		<f:if condition="{backendUser.groupname} == 'Badges' || {backendUser.groupname} == 'Level'">
 			<h3>{backendUser.groupname}</h3>
 			<div class="rewardImages">
 				<h4>Login</h4>
