@@ -3,47 +3,46 @@
 			data-namespace-typo3-fluid="true">
 
 <f:comment>Check, if user is logged in and is not part of the contoll group</f:comment>
+<f:alias
+	map="{backendUser:'{og:getBackendUser()}',
+	editedPages: '{og:getEditedPages(uid:address.userUid)}',
+	numberOfEdits: '{og:getNumberOfEdits(uid:address.userUid)}'}">
 
-<f:if condition="{og:getBackendUser()} == {address.userUid} && {address.userGroupname} =! Controlgroup">
-	<h3>Rewards</h3>
-	<div class="rewardImages">
-		<f:switch expression="{address.userGroupname}">
-
-			<f:case value="Badges">
+		<f:if condition="{backendUser.groupname}">
+			<h3>{backendUser.groupname}</h3>
+			<div class="rewardImages">
 				<h4>Login</h4>
 				<f:image src="EXT:oafwm_gamification/Resources/Public/Images/SingleLogin.png"
-								 alt="Das erste Mal eingeloggt" title="Das erste Mal eingeloggt" />
+								 alt="Badge für 1 Mal einloggen" title="Das erste Mal eingeloggt"/>
+				<f:alias map="{logins:'{og:getNumberOfLogins(uid:backendUser)}'}">
+					<f:if condition="{logins} > 10">
+						<f:image src="EXT:oafwm_gamification/Resources/Public/Images/MultipleLogin.png"
+										 alt="Badge für mehr als 10 Mal einloggen" title="Mehr als 10 Mal eingeloggt"/>
+					</f:if>
+				</f:alias>
 
-				<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} > 0">
-					<h4>Badges</h4>
+				<h4>Anzahl editierter Seiten</h4>
+				<f:if condition="{backendUser.groupname} == Badges">
+					<f:if condition="{editedPages -> f:count()} > 0">
 						<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/SingleEdit.png"
-										 alt="Eine Seite bearbeitet" title="Eine Seite bearbeitet" />
-						<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} > 1">
+										 alt="Eine Seite bearbeitet" title="Eine Seite bearbeitet"/>
+						<f:if condition="{editedPages -> f:count()} > 1">
 							<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/MultiEdit.png"
-											 alt="Mehr als eine Seite bearbeitet" title="Mehr als eine Seite bearbeitet" />
+											 alt="Mehr als eine Seite bearbeitet" title="Mehr als eine Seite bearbeitet"/>
 						</f:if>
+					</f:if>
 				</f:if>
-			</f:case>
 
-			<f:case value="Level">
-				<h4>Login</h4>
-				<f:image src="EXT:oafwm_gamification/Resources/Public/Images/SingleLogin.png"
-								 alt="Das erste Mal eingeloggt" title="Das erste Mal eingeloggt" />
-
-				<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} > 0">
-					<h4>Level</h4>
+				<f:if condition="{backendUser.groupname} == Level">
+					<f:if condition="{editedPages -> f:count()} > 0">
 						<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Levels/SingleEdit.png"
-										 alt="Eine Seite bearbeitet" title="Eine Seite bearbeitet" />
-						<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} > 1">
+										 alt="Eine Seite bearbeitet" title="Eine Seite bearbeitet"/>
+						<f:if condition="{editedPages -> f:count()} > 1">
 							<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Levels/MultiEdit.png"
-											 alt="Mehr als eine Seite bearbeitet" title="Mehr als eine Seite bearbeitet" />
+											 alt="Mehr als eine Seite bearbeitet" title="Mehr als eine Seite bearbeitet"/>
 						</f:if>
+					</f:if>
 				</f:if>
-			</f:case>
-
-			<f:case value="Controlgroup">
-				<f:comment>Nothing</f:comment>
-			</f:case>
-		</f:switch>
-	</div>
-</f:if>
+			</div>
+		</f:if>
+</f:alias>

@@ -27,67 +27,57 @@ namespace Subugoe\OafwmGamification\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ******************************************************************************/
 
-use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+
 
 /**
- * Class GetEditedPagesViewHelper
+ * Class GetNumberOfEditsViewHelper
  * @package Subugoe\OafwmGamification\ViewHelpers
  */
-class GetBackendUserViewHelper extends AbstractViewHelper
+class GetNumberOfEditsViewHelper extends AbstractViewHelper
 {
 
-    /**
-     * uid
-     *
-     * @var string
-     */
-    protected $uid;
-
-    /**
-     * groupName
-     *
-     * @var string
-     */
-    protected $groupName;
-
-    /**
-     * @return mixed
-     */
-    public function getUid()
+    // SELECT COUNT(*) FROM `sys_log` WHERE userid = 3 AND tablename = "tt_content"
+    protected function getNumberOfEdits($id)
     {
-        return $GLOBALS['BE_USER']->user['uid'];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGroupName()
-    {
-        $userUid = $this->getUid();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tt_address');
-        $groupName = $queryBuilder
-            ->select('user_groupname')
-            ->from('tt_address')
+            ->getQueryBuilderForTable('sys_log');
+        $count = $queryBuilder
+            ->count('*')
+            ->from('sys_log')
             ->where(
-                $queryBuilder->expr()->eq('user_uid', $queryBuilder->createNamedParameter($userUid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('userid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->like('tablename', $queryBuilder->createNamedParameter('%tt_content%'))
             )
             ->execute()
             ->fetchColumn(0);
-        return $groupName;
+        return $count;
     }
 
     /**
-     * Return array with uid and groupname of backend user
+     * Initialize all arguments. You need to override this method and call
+     * $this->registerArgument(...) inside this method, to register all your arguments.
      *
-     * @return array
+     * @api
+     */
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('uid', 'integer', 'Uid of user to show the number edited pages for', true);
+    }
+
+    /**
+     * @return string
      */
     public function render()
     {
-        $user = array('uid'=>$this->getUid(), 'groupname'=> $this->getGroupName());
-        return $user;
+        $uid = $this->arguments['uid'];
+        $count = $this->getNumberOfEdits($uid);
+        return $count;
     }
 }
+
+?>
