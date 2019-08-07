@@ -3,7 +3,7 @@
 			data-namespace-typo3-fluid="true">
 
 <f:alias map="{authorUids:'{og:getAuthorsOfPage(pid:data.uid)}'}">
-	Seite nach dem <f:format.date format="%d. %B %Y">{og:getBeginOfSyslog()}</f:format.date> bearbeitet von:
+	Seit dem <f:format.date format="%d. %B %Y">{og:getBeginOfSyslog()}</f:format.date> bearbeitet von:
 	<f:for each="{authorUids}" as="res" iteration="iter">
 		<f:alias map="{user:'{og:getBackendUser(uid:res.userid)}'}">
 			<f:if condition="{user} != ''">
