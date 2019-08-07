@@ -5,35 +5,13 @@
 
 <main role="main" class="main">
 	<f:cObject typoscriptObjectPath="lib.breadCrumb"/>
-	<f:alias map="{authorUids:'{og:getAuthorsOfPage(pid:data.uid)}'}">
-		Seite seit dem <f:format.date format="%d. %B %Y">{og:getBeginOfSyslog()}</f:format.date> bearbeitet von:
-		<f:for each="{authorUids}" as="res" iteration="iter">
-			<f:alias map="{user:'{og:getBackendUser(uid:res.userid)}'}">
-				<f:if condition="{user} != ''">
-					<f:if condition="{iter.isFirst}">
-						<f:then>
-						{user}
-						</f:then>
-						<f:else>
-					    <f:if condition="{iter.isLast}">
-						    <f:then>
-							    und {user}
-						    </f:then>
-					      <f:else>
-									, {user}
-						     </f:else>
-							</f:if>
-						</f:else>
-					</f:if>
-				</f:if>
-			</f:alias>
-		</f:for>
-	</f:alias>
 
 	<!--TYPO3SEARCH_begin-->
 	<f:format.htmlentitiesDecode>
 		<f:cObject typoscriptObjectPath="lib.relContent.def"/>
 	</f:format.htmlentitiesDecode>
+	<f:render partial="PageEdited.html" arguments="{_all}"/>
+
 	<!--TYPO3SEARCH_end-->
 	<f:render partial="Search.html" arguments="{_all}"/>
 </main>
