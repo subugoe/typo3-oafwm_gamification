@@ -11,12 +11,10 @@
 			{address.lastName}
 		</core:contentEditable>
 	</h2>
-	<f:render section="position" partial="Address" arguments="{_all}"/>
 
 
 	<f:if condition="{address.image}">
 		<f:then>
-			<div class="addressImage">
 					<figure class="figure">
 						<f:image image="{address.firstImage}" width="600"
 										 class="figure-img img-fluid img-thumbnail rounded"
@@ -33,16 +31,15 @@
 				<div class="addressContent">
 					<f:render section="content" arguments="{_all}"/>
 				</div>
-			</div>
 		</f:then>
 		<f:else>
 			<f:render section="content" arguments="{_all}"/>
 		</f:else>
 	</f:if>
 </div>
+<f:render partial="Rewards" arguments="{_all}"/>
 
 <f:render partial="EditedPages" arguments="{_all}"/>
-<f:render partial="Rewards" arguments="{_all}"/>
 
 <f:section name="content">
 	<f:if condition="{address.description}">

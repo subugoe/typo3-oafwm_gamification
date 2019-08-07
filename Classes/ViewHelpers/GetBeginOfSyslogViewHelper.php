@@ -27,56 +27,47 @@ namespace Subugoe\OafwmGamification\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ******************************************************************************/
 
-use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+
 
 /**
- * Class GetBackendUserViewHelper
+ * Class GetBeginOfSyslogViewHelper
  * @package Subugoe\OafwmGamification\ViewHelpers
  */
-class GetBackendUserViewHelper extends AbstractViewHelper
+class GetBeginOfSyslogViewHelper extends AbstractViewHelper
 {
+    // SELECT MIN( tstamp ) FROM `sys_log`
+    protected function getBeginOfSyslog()
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_log');
+        $tstamps = $queryBuilder
+            ->select('tstamp')
+            ->from('sys_log')
+            ->execute()
+        ->fetch();
+
+        // only use unique ids
+        $lowest = "15554301560";
+        foreach ($tstamps as $tstamp) {
+            if ($tstamp < $lowest) {
+                $lowest = $tstamp;
+            }
+        };
+        return $lowest;
+    }
+
     /**
      * @return string
      */
-    public function getBackendUser($uid)
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('be_users');
-        $groupName = $queryBuilder
-            ->select('realname')
-            ->from('be_users')
-            ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
-            )
-            ->execute()
-            ->fetchColumn(0);
-        return $groupName;
-    }
-
-    /**
-     * Initialize all arguments. You need to override this method and call
-     * $this->registerArgument(...) inside this method, to register all your arguments.
-     *
-     * @api
-     */
-    public function initializeArguments()
-    {
-        parent::initializeArguments();
-        $this->registerArgument('uid', 'integer', 'Id of user', true);
-    }
-
-    /**
-     * Return array with uid and groupname of backend user
-     *
-     * @return array
-     */
     public function render()
     {
-        $uid = $this->arguments['uid'];
-        $username = $this->getBackendUser($uid);
-        return $username;
+        $begin = $this->getBeginOfSyslog();
+        return $begin;
     }
 }
+
+?>
