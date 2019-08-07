@@ -27,33 +27,40 @@ namespace Subugoe\OafwmGamification\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ******************************************************************************/
 
-use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+
 
 /**
- * Class GetBackendUserViewHelper
+ * Class GetAuthorsOfPageViewHelper
  * @package Subugoe\OafwmGamification\ViewHelpers
  */
-class GetBackendUserViewHelper extends AbstractViewHelper
+class GetAuthorsOfPageViewHelper extends AbstractViewHelper
 {
-    /**
-     * @return string
-     */
-    public function getBackendUser($uid)
+
+    // SELECT userid FROM `sys_log` where tablename = "tt_content" and event_pid = "150"
+    protected function getAuthorOfPage($pid)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('be_users');
-        $groupName = $queryBuilder
-            ->select('realname')
-            ->from('be_users')
+            ->getQueryBuilderForTable('sys_log');
+        $authorUids = $queryBuilder
+            ->select('userid')
+            ->from('sys_log')
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('tablename', $queryBuilder->createNamedParameter("tt_content", \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('event_pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT))
             )
-            ->execute()
-            ->fetchColumn(0);
-        return $groupName;
+            ->execute();
+        // only use unique ids
+        $authorArray = [];
+        foreach ($authorUids as $author) {
+            if (in_array($author, $authorArray)) {} else {
+                array_push($authorArray, $author);
+            }
+        };
+        return array_merge($authorArray);
     }
 
     /**
@@ -65,18 +72,18 @@ class GetBackendUserViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('uid', 'integer', 'Id of user', true);
+        $this->registerArgument('pid', 'integer', 'Pid of page', true);
     }
 
     /**
-     * Return array with uid and groupname of backend user
-     *
-     * @return array
+     * @return string
      */
     public function render()
     {
-        $uid = $this->arguments['uid'];
-        $username = $this->getBackendUser($uid);
-        return $username;
+        $pid = $this->arguments['pid'];
+        $authors = $this->getAuthorOfPage($pid);
+        return $authors;
     }
 }
+
+?>

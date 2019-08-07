@@ -4,7 +4,7 @@
 
 <f:comment>Check, if user is logged in and is not part of the contoll group</f:comment>
 <f:alias
-	map="{backendUser:'{og:getBackendUser()}',
+	map="{backendUser:'{og:getCurrentBackendUser()}',
 	editedPages: '{og:getEditedPages(uid:address.userUid)}',
 	numberOfEdits: '{og:getNumberOfEdits(uid:address.userUid)}'}">
 

@@ -33,39 +33,51 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /**
- * Class GetBackendUserViewHelper
+ * Class GetEditedPagesViewHelper
  * @package Subugoe\OafwmGamification\ViewHelpers
  */
-class GetBackendUserViewHelper extends AbstractViewHelper
+class GetCurrentBackendUserViewHelper extends AbstractViewHelper
 {
+
     /**
-     * @return string
+     * uid
+     *
+     * @var string
      */
-    public function getBackendUser($uid)
+    protected $uid;
+
+    /**
+     * groupName
+     *
+     * @var string
+     */
+    protected $groupName;
+
+    /**
+     * @return mixed
+     */
+    public function getUid()
     {
+        return $GLOBALS['BE_USER']->user['uid'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroupName()
+    {
+        $userUid = $this->getUid();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('be_users');
+            ->getQueryBuilderForTable('tt_address');
         $groupName = $queryBuilder
-            ->select('realname')
-            ->from('be_users')
+            ->select('user_groupname')
+            ->from('tt_address')
             ->where(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('user_uid', $queryBuilder->createNamedParameter($userUid, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetchColumn(0);
         return $groupName;
-    }
-
-    /**
-     * Initialize all arguments. You need to override this method and call
-     * $this->registerArgument(...) inside this method, to register all your arguments.
-     *
-     * @api
-     */
-    public function initializeArguments()
-    {
-        parent::initializeArguments();
-        $this->registerArgument('uid', 'integer', 'Id of user', true);
     }
 
     /**
@@ -75,8 +87,7 @@ class GetBackendUserViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $uid = $this->arguments['uid'];
-        $username = $this->getBackendUser($uid);
-        return $username;
+        $user = array('uid'=>$this->getUid(), 'groupname'=> $this->getGroupName());
+        return $user;
     }
 }
