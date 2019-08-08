@@ -13,5 +13,7 @@
 	<f:render partial="PageEdited.html" arguments="{_all}"/>
 
 	<!--TYPO3SEARCH_end-->
-	<f:render partial="Search.html" arguments="{_all}"/>
+	<f:if condition="{SEARCH_UID} == {data.uid}">
+		<f:render partial="Search.html" arguments="{_all}"/>
+	</f:if>
 </main>
