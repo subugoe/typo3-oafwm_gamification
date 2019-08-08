@@ -2,6 +2,16 @@
 			xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
+<f:comment>
+	Show information about Editors of page, but not for service-Sites
+</f:comment>
+<f:if condition="{data.uid} != {SEARCH_UID} &&
+{data.uid} != {IMPRESSUM_UID} &&
+{data.uid} != {KONTAKT_UID} &&
+{data.uid} != {PRIVACY_UID} &&
+{data.uid} != {NEWS_UID} &&
+{data.uid} != {NEWS_UID} &&
+{data.uid} != {SITEMAP_UID}">
 <f:alias map="{authorUids:'{og:getAuthorsOfPage(pid:data.uid)}'}">
 	Seit dem <f:format.date format="%d. %B %Y">{og:getBeginOfSyslog()}</f:format.date> bearbeitet von:
 	<f:for each="{authorUids}" as="res" iteration="iter">
@@ -26,3 +36,4 @@
 		</f:alias>
 	</f:for>
 </f:alias>
+</f:if>
