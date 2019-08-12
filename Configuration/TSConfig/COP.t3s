@@ -1,0 +1,5 @@
+// Redirect cop members directly to the frontend
+[usergroup = 8]
+    #auth.BE.redirectToURL = ./../ueber-uns/autoren
+    RTE.default.preset = cop
+[end]
