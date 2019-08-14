@@ -3,17 +3,48 @@
     flex-wrap: wrap;
 }
 
-.tx-ttaddress .rewardImages {
+.tt_address_detail-name {
+    display: flex;
+    width: 100%;
+}
+
+.main h2 + div.tt_address_detail-personal { // has to override _trumps.widths-responsive.scss
+    display: flex;
+    flex-direction: column;
+    width: 50% !important;
+    padding-left: 0;
+}
+
+.tt_address_detail-description {
+    display: flex;
+    flex-direction: column;
+}
+
+.tt_address_detail-rewardImages {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-top: 48px; /* line hight of name */
+    width: 50%;
+}
 
-    img {
-        width: 100px;
-        height: auto;
-        margin: 12px 0 12px 12px;
-    }
+.tt_address_detail-rewardImages img {
+    width: 100px;
+    height: auto;
+    margin: 12px 0 12px 12px;
+}
+
+.tt_address_detail-personal .roundedImage {
+    margin: 20px 0;
+}
+
+.tt_address_detail-editedPages {
+    width: 100%;
+}
+
+.tt_address_list .addressImage:hover,
+.tt_address_detail-addressImage:focus {
+    background-color: #fff !important;
+    color: inherit;
 }
 
 .tt_address_list {
@@ -25,16 +56,13 @@
 .tt_address_list .vcard {
     padding-bottom: 20px;
     display: flex;
-
-    &:hover .turnable {
-        transform: rotateY(180deg); /* Beim Mouse-Over wird die Szene umgedreht */
-    }
+    width: calc(100% / 3);
+    padding: 20px;
 }
 
-.tt_address_list .turnable .back {
+.tt_address_list .author {
     display: flex;
-    background-color: #eee;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
 }
 
@@ -42,80 +70,29 @@
     text-align: center;
 }
 
-.tt_address_list .vcard a {
-    background-color: #fff;
-    color: #333;
-    border-color: #eee;
-}
-
-.vcard.tt_address_detail {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-}
-
-.tt_address_detail .name {
-    display: flex;
-}
-
-.tt_address_detail .job {
-    display: flex;
-}
-
-.tt_address_detail .addressImage {
-    padding-left: 0;
-    background-color: #fff;
-}
-
-.tt_address_detail figure {
-    width: 300px;
-    margin: 0;
-}
-
-.tt_address_detail figure img {
-    width: 100%;
-    height: auto;
-}
-
-.tt_address .vcard {
-    width: calc(100% / 3);
-    padding: 10px;
-    display: block;
-    height: 300px;
-}
-
-.image-center-horizontal {
-    position: relative;
+.tt_address_list .roundedImage {
     width: 200px;
     height: 200px;
-    overflow: hidden;
-    border-width: 1px;
-    border-style: ridge;
-    border-color: #eee;
-    display: flex;
-    align-items: stretch;
 }
 
-.image-center-vertical {
-    position: relative;
-    overflow: hidden;
-}
-
-.image-center-horizontal img {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    height: auto;
+.tt_address_list .image img {
     width: 100%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+    height: auto;
 }
 
 .tt_address_list .addressName {
     width: 200px;
 }
 
+.tt_address_list .addressName h3 {
+    text-align: center;
+    padding: 20px 0;
+}
+
 .tt_address_list .addressImage {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
 }
+

@@ -15,3 +15,8 @@ if (!defined('TYPO3_MODE')) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:oafwm_gamification/Configuration/TSConfig/Page.t3s">'
 );
+// and TSconfig for Copas
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
+    '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:tmpl_ipoa/Configuration/TSConfig/COP.t3s">'
+);
+
