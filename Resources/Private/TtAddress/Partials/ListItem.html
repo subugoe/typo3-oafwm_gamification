@@ -1,19 +1,19 @@
 <div class="vcard" itemscope itemtype="http://schema.org/Person">
-	<div class="turnable">
+	<div class="author">
 		<f:link.action action="show" arguments="{address : address}"
 									 title="{address.fullName}"
 									 class="addressImage "
 									 pageUid="{settings.singlePid}">
-			<div class="image-center-horizontal">
+			<div class="roundedImage listImage">
 				<f:if condition="{address.image}">
-					<f:media file="{address.firstImage}" width="400" class="img-fluid img-thumbnail rounded front"
+					<f:media file="{address.firstImage}" width="400"
 									 alt="{img.originalResource.alt}"
 									 title="{address.fullName}"/>
 
-					<div class="addressName back">
-						<h3>{address.fullName}</h3>
-					</div>
 				</f:if>
+			</div>
+			<div class="addressName">
+				<h3>{address.fullName}</h3>
 			</div>
 		</f:link.action>
 	</div>
