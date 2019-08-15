@@ -1,6 +1,10 @@
 CREATE TABLE tt_address (
-	user_uid INT(11)                 NOT NULL,
-	user_groupname VARCHAR(255) DEFAULT '' NOT NULL
+	oafwm_uid INT(11)                 NOT NULL,
+	oafwm_groupname VARCHAR(255) DEFAULT '' NOT NULL,
+	oafwm_twitter VARCHAR(255) DEFAULT '' NOT NULL,
+	oafwm_orcid VARCHAR(255) DEFAULT '' NOT NULL,
+	oafwm_linkedin VARCHAR(255) DEFAULT '' NOT NULL,
+	oafwm_xing VARCHAR(255) DEFAULT '' NOT NULL
 );
 
 

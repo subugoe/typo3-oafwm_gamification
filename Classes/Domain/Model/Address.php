@@ -31,40 +31,100 @@ class Address extends \FriendsOfTYPO3\TtAddress\Domain\Model\Address
     /**
      * @var integer
      */
-    protected $userUid;
+    protected $oafwmUid;
 
     /**
      * @var string
      */
-    protected $userGroupname;
+    protected $oafwmGroupname;
 
     /**
      * @return integer
      */
-    public function getUserUid()
+    public function getOafwmUid()
     {
-        return $this->userUid;
+        return $this->oafwmUid;
     }
     /**
-     * @param integer $userUid
+     * @param integer $oafwmUid
      */
-    public function setUserUid($userUid)
+    public function setOafwmUid($oafwmUid)
     {
-        $this->userUid = $userUid;
+        $this->oafwmUid = $oafwmUid;
     }
 
     /**
      * @return integer
      */
-    public function getUserGroupname()
+    public function getOafwmGroupname()
     {
-        return $this->userGroupname;
+        return $this->oafwmGroupname;
     }
     /**
-     * @param integer $userGroupname
+     * @param integer $oafwmGroupname
      */
-    public function setUserGroupname($userGroupname)
+    public function setOafwmGroupname($oafwmGroupname)
     {
-        $this->userGroupname = $userGroupname;
+        $this->oafwmGroupname = $oafwmGroupname;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOafwmOrcid()
+    {
+        return $this->oafwmOrcid;
+    }
+    /**
+     * @param integer $oafwmOrcid
+     */
+    public function setOafwmOrcid($oafwmOrcid)
+    {
+        $this->oafwmOrcid = $oafwmOrcid;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOafwmTwitter()
+    {
+        return $this->oafwmTwitter;
+    }
+    /**
+     * @param integer $oafwmTwitter
+     */
+    public function setOafwmTwitter($oafwmTwitter)
+    {
+        $this->oafwmTwitter = $oafwmTwitter;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOafwmLinkedin()
+    {
+        return $this->oafwmLinkedin;
+    }
+    /**
+     * @param integer $oafwmLinkedin
+     */
+    public function setOafwmLinkedin($oafwmLinkedin)
+    {
+        $this->oafwmLinkedin = $oafwmLinkedin;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOafwmXing()
+    {
+        return $this->oafwmXing;
+    }
+    /**
+     * @param integer $soafwmXing
+     */
+    public function setSocialXing($oafwmXing)
+    {
+        $this->oafwmXing = $oafwmXing;
     }
 }

@@ -15,6 +15,10 @@
     padding-left: 0;
 }
 
+.tt_address_detail-personal h4 {
+    margin-bottom: 4px;
+}
+
 .tt_address_detail-description {
     display: flex;
     flex-direction: column;
@@ -39,6 +43,28 @@
 
 .tt_address_detail-editedPages {
     width: 100%;
+}
+
+.tt_address-detail-orcid,
+.tt_address-detail-twitter,
+.tt_address-detail-linkedin,
+.tt_address-detail-xing {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
+.tt_address_detail-personal .social-logo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.social-logo img {
+    width: 1.2em;
+    margin-right: 0.5em;
+    height: auto;
+    display: flex;
 }
 
 .tt_address_list .addressImage:hover,

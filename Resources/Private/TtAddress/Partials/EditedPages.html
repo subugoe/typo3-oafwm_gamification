@@ -1,12 +1,12 @@
 <html xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
-<f:if condition="{og:getEditedPages(uid:address.userUid) -> f:count()} > 0}">
+<f:if condition="{og:getEditedPages(uid:address.oafwmUid) -> f:count()} > 0}">
 	<div class="tt_address_detail-editedPages">
 		<h4>Bearbeitete Seiten</h4>
 
 		<ul>
-			<f:for each="{og:getEditedPages(uid:address.userUid)}" as="pages" key="pagesKey">
+			<f:for each="{og:getEditedPages(uid:address.oafwmUid)}" as="pages" key="pagesKey">
 				<f:for each="{pages}" as="page">
 					<li>
 						<f:link.page pageUid="{page.uid}">{page.title}</f:link.page>

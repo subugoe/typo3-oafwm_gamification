@@ -48,7 +48,7 @@ class GetBeginOfSyslogViewHelper extends AbstractViewHelper
             ->select('tstamp')
             ->from('sys_log')
             ->execute()
-        ->fetch();
+            ->fetch();
 
         // only use unique ids
         $lowest = "15554301560";
