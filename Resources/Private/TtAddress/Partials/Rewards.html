@@ -5,8 +5,8 @@
 <f:comment>Check, if user is logged in and is not part of the contoll group</f:comment>
 <f:alias
 	map="{backendUser:'{og:getCurrentBackendUser()}',
-	editedPages: '{og:getEditedPages(uid:address.userUid)}',
-	numberOfEdits: '{og:getNumberOfEdits(uid:address.userUid)}'}">
+	editedPages: '{og:getEditedPages(uid:address.oafwmUid)}',
+	numberOfEdits: '{og:getNumberOfEdits(uid:address.oafwmUid)}'}">
 
 		<f:if condition="{backendUser.groupname} == 'Badges' || {backendUser.groupname} == 'Level'">
 			<div class="tt_address_detail-rewardImages">

@@ -1,4 +1,6 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/FrontendEditing/ViewHelpers"
+			xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
+			xmlns:v="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
 
@@ -16,15 +18,16 @@
 
 	<f:if condition="{address.image}">
 		<div class="">
-		<div class="roundedImage">
-			<f:image image="{address.firstImage}" width="600"
-							 alt="{img.originalResource.alt}"
-							 title="{img.originalResource.title}"
-							 additionalAttributes="{itemprop:'image'}"/>
-		</div>
+			<div class="roundedImage">
+				<f:image image="{address.firstImage}" width="600"
+								 alt="{img.originalResource.alt}"
+								 title="{img.originalResource.title}"
+								 additionalAttributes="{itemprop:'image'}"/>
+			</div>
 		</div>
 	</f:if>
 	<f:render section="content" arguments="{_all}"/>
+	<f:render section="social" arguments="{_all}"/>
 </div>
 
 <f:render partial="Rewards" arguments="{_all}"/>
@@ -39,7 +42,33 @@
 			</core:contentEditable>
 		</div>
 	</f:if>
-
 </f:section>
 
+
+<f:section name="social">
+	<f:alias map="{user:'{og:getBackendUser(uid:address.oafwmUid)}'}">
+		<f:for each="{0:'orcid', 1:'twitter', 2:'xing', 3:'linkedin'}" as="network" iteration="iterator">
+
+			<f:if condition="{user.social.oafwm_{network}} != ''">
+
+				<f:if condition="{iterator.isFirst}">
+					<h4>Social Networks</h4>
+				</f:if>
+				<div class="tt_address-detail-{network}" itemprop="{network}">
+					<span class="social-logo">
+						<f:image
+							src="EXT:oafwm_gamification/Resources/Public/Images/Logos/{network}.png"
+						title="{f:format.case(mode:'capital', value:'{network}')}"/>
+					</span>
+					<span class="social-text">
+						<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
+									{user.social.oafwm_{network}}
+						</core:contentEditable>
+					</span>
+				</div>
+			</f:if>
+		</f:for>
+
+	</f:alias>
+</f:section>
 </html>

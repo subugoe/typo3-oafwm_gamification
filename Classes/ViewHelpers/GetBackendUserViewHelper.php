@@ -57,6 +57,31 @@ class GetBackendUserViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @return array
+     */
+    public function getSocial($uid)
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_address');
+        $statement = $queryBuilder
+            ->select('*')
+            ->from('tt_address')
+            ->where(
+                $queryBuilder->expr()->eq('oafwm_uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+            )
+            ->execute();
+
+        $result = [];
+        while ($record = $statement->fetch()) {
+            $result['oafwm_orcid'] = $record['oafwm_orcid'];
+            $result['oafwm_twitter'] = $record['oafwm_twitter'];
+            $result['oafwm_linkedin'] = $record['oafwm_linkedin'];
+            $result['oafwm_xing'] = $record['oafwm_xing'];
+        };
+        return $result;
+    }
+
+    /**
      * Initialize all arguments. You need to override this method and call
      * $this->registerArgument(...) inside this method, to register all your arguments.
      *
@@ -76,7 +101,10 @@ class GetBackendUserViewHelper extends AbstractViewHelper
     public function render()
     {
         $uid = $this->arguments['uid'];
-        $username = $this->getBackendUser($uid);
-        return $username;
+        $user = array(
+            'username' => $this->getBackendUser($uid),
+            'social' => $this->getSocial($uid)
+        );
+        return $user;
     }
 }

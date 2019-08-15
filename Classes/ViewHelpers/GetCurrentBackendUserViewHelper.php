@@ -70,10 +70,10 @@ class GetCurrentBackendUserViewHelper extends AbstractViewHelper
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tt_address');
         $groupName = $queryBuilder
-            ->select('user_groupname')
+            ->select('oafwm_groupname')
             ->from('tt_address')
             ->where(
-                $queryBuilder->expr()->eq('user_uid', $queryBuilder->createNamedParameter($userUid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('oafwm_uid', $queryBuilder->createNamedParameter($userUid, \PDO::PARAM_INT))
             )
             ->execute()
             ->fetchColumn(0);
@@ -87,7 +87,10 @@ class GetCurrentBackendUserViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $user = array('uid'=>$this->getUid(), 'groupname'=> $this->getGroupName());
+        $user = array(
+            'uid' => $this->getUid(),
+            'groupname' => $this->getGroupName()
+        );
         return $user;
     }
 }
