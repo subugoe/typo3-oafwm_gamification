@@ -1,18 +1,22 @@
 <html xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
+			xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:v="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
 <f:if condition="{og:getEditedPages(uid:address.oafwmUid) -> f:count()} > 0}">
 	<div class="tt_address_detail-editedPages">
 		<h4>Bearbeitete Seiten</h4>
-
-		<ul>
-			<f:for each="{og:getEditedPages(uid:address.oafwmUid)}" as="pages" key="pagesKey">
-				<f:for each="{pages}" as="page">
-					<li>
-						<f:link.page pageUid="{page.uid}">{page.title}</f:link.page>
-					</li>
-				</f:for>
+		<ul class="loadable">
+			<f:for each="{og:getEditedPages(uid:address.oafwmUid)}" as="page" key="pagesKey">
+				<li>
+					<f:link.page pageUid="{page}">{pagesKey}</f:link.page>
+				</li>
 			</f:for>
 		</ul>
+		<a class="loadMore">
+			<svg class="fa-icon fa-icon-angle-double-down">
+				<use xlink:href="#icon-angle-double-down"></use>
+			</svg> Mehr Seiten zeigen
+		</a>
 	</div>
 </f:if>

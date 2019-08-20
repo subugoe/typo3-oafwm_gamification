@@ -21,4 +21,15 @@ jQuery(() => {
       image.css('margin-left', '-25%');
     }
   });
+
+  /**
+   * show only some edited pages
+   */
+  let numOfPages = 5;
+  jQuery('.loadable li').slice(0, 5).show();
+  jQuery('.loadMore').on('click', elem => {
+    elem.preventDefault();
+    numOfPages += 8;
+    jQuery('.loadable li').slice(0, numOfPages).slideDown();
+  });
 });

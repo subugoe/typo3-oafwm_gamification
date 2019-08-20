@@ -35,6 +35,9 @@ use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * Class GetEditedPagesViewHelper
+ *
+ * Returns associative array with page titles and uids as their value
+ * e.g: Anleitungen -> 1291
  * @package Subugoe\OafwmGamification\ViewHelpers
  */
 class GetEditedPagesViewHelper extends AbstractViewHelper
@@ -52,15 +55,9 @@ class GetEditedPagesViewHelper extends AbstractViewHelper
                 $queryBuilder->expr()->eq('userid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->neq('event_pid', $queryBuilder->createNamedParameter('-1'))
             )
-            ->execute();
-        // only use unique ids
-        $pageArray = [];
-        foreach ($pageIds as $page) {
-            if (in_array($page, $pageArray)) {} else {
-                array_push($pageArray, $page);
-            }
-        };
-        return array_merge($pageArray);
+            ->execute()
+            ->fetchAll();
+        return $pageIds;
     }
 
     protected function getPageName($pageId)
@@ -68,12 +65,12 @@ class GetEditedPagesViewHelper extends AbstractViewHelper
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
         $pageName = $queryBuilder
-            ->select('title','uid')
+            ->select('title','uid','tstamp')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT))
             )
-            ->execute()->fetchAll();
+            ->execute()->fetch(0);
         return $pageName;
     }
 
@@ -99,9 +96,20 @@ class GetEditedPagesViewHelper extends AbstractViewHelper
         $pages = $this->getPagesID($uid);
         foreach ($pages as $pageId)
         {
-            array_push($pageNames, $this->getPageName($pageId['event_pid']));
+            $name = $this->getPageName($pageId['event_pid']);
+            if ($name) {
+                     array_push($pageNames, $name);
+
+            }
         }
-        return $pageNames;
+        sort($pageNames);
+        $uniqPages = [];
+        foreach ($pageNames as $page) {
+            if (in_array($page, $pages)) {} else {
+                $uniqPages[$page['title']] = $page['uid'];
+            }
+        }
+        return $uniqPages;
     }
 }
 
