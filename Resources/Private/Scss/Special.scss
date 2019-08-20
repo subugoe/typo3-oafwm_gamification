@@ -1,27 +1,6 @@
-
 /**
-  * Create turnable elements
- * to work correctly, the surrounding div must implement :hover {transform: rotateY(180deg);}
+ * rounded images
  */
-
-.turnable {
-    transition: .5s /* Let turn take 0,5 secs */;
-    transform-style: preserve-3d; /* child elements  (.front + .back) keep their 3D- properties */
-}
-
-.turnable .front {
-    z-index: 2;
-}
-
-.turnable .back {
-    transform: rotateY(180deg) /* back is turned, to be in front after turning */;
-    z-index: 1;
-}
-
-.turnable .back,
-.turnable .front {
-    backface-visibility: hidden /* back is invisible */;
-}
 
 .roundedImage {
     width: 300px;
@@ -36,4 +15,15 @@
     margin: 0 auto;
     width: 100%;
     height: auto;
+}
+
+/**
+ * loadable list
+ */
+
+.loadable li{display:none;
+}
+
+.loadMore {
+    cursor:pointer;
 }
