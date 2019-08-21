@@ -21,9 +21,15 @@
  * loadable list
  */
 
-.loadable li{display:none;
+.loadable li {
+    display:none;
 }
 
 .loadMore {
     cursor:pointer;
+}
+
+.loadLess {
+    cursor:pointer;
+    visibility: hidden; /* only hidden, so that jQuery click can apply */
 }

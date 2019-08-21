@@ -43,18 +43,19 @@ use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 class GetEditedPagesViewHelper extends AbstractViewHelper
 {
 
-    // SELECT pid FROM `sys_log` WHERE userid = 3 AND tablename = "tt_content"
+    // SELECT event_pid, tstamp FROM `sys_log` WHERE userid = 3 AND tablename = "tt_content"
     protected function getPagesID($id)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_log');
         $pageIds = $queryBuilder
-            ->select('event_pid')
+            ->select('event_pid', 'tstamp')
             ->from('sys_log')
             ->where(
                 $queryBuilder->expr()->eq('userid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->neq('event_pid', $queryBuilder->createNamedParameter('-1'))
             )
+            ->orderBy('tstamp', 'DESC')
             ->execute()
             ->fetchAll();
         return $pageIds;
@@ -102,12 +103,9 @@ class GetEditedPagesViewHelper extends AbstractViewHelper
 
             }
         }
-        sort($pageNames);
         $uniqPages = [];
         foreach ($pageNames as $page) {
-            if (in_array($page, $pages)) {} else {
                 $uniqPages[$page['title']] = $page['uid'];
-            }
         }
         return $uniqPages;
     }
