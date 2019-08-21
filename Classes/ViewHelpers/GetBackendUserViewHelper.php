@@ -75,8 +75,6 @@ class GetBackendUserViewHelper extends AbstractViewHelper
         while ($record = $statement->fetch()) {
             $result['oafwm_orcid'] = $record['oafwm_orcid'];
             $result['oafwm_twitter'] = $record['oafwm_twitter'];
-            $result['oafwm_linkedin'] = $record['oafwm_linkedin'];
-            $result['oafwm_xing'] = $record['oafwm_xing'];
         };
         return $result;
     }

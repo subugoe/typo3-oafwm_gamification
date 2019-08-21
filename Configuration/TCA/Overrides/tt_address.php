@@ -37,20 +37,6 @@ $columns = [
             'default' => '',
             'type' => 'input',
         ]
-    ],
-    'oafwm_xing' => [
-        'label' => 'Xing account',
-        'config' => [
-            'default' => '',
-            'type' => 'input',
-        ],
-    ],
-    'oafwm_linkedin' => [
-        'label' => 'LinkedIn account',
-        'config' => [
-            'default' => '',
-            'type' => 'input',
-        ],
     ]
 ];
 
@@ -59,6 +45,4 @@ $columns = [
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'oafwm_groupname', '', 'after:oafwm_uid');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'oafwm_orcid', '', 'after:www');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'oafwm_twitter', '', 'after:oafwm_orcid');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'oafwm_xing', '', 'after:oafwm_twitter');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'oafwm_linkedin', '', 'after:oafwm_xing');
 

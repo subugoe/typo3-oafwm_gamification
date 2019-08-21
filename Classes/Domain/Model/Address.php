@@ -97,34 +97,4 @@ class Address extends \FriendsOfTYPO3\TtAddress\Domain\Model\Address
     {
         $this->oafwmTwitter = $oafwmTwitter;
     }
-
-    /**
-     * @return integer
-     */
-    public function getOafwmLinkedin()
-    {
-        return $this->oafwmLinkedin;
-    }
-    /**
-     * @param integer $oafwmLinkedin
-     */
-    public function setOafwmLinkedin($oafwmLinkedin)
-    {
-        $this->oafwmLinkedin = $oafwmLinkedin;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getOafwmXing()
-    {
-        return $this->oafwmXing;
-    }
-    /**
-     * @param integer $soafwmXing
-     */
-    public function setSocialXing($oafwmXing)
-    {
-        $this->oafwmXing = $oafwmXing;
-    }
 }
