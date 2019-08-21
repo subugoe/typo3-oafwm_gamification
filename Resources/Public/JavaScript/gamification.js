@@ -25,14 +25,6 @@ jQuery(() => {
   /**
    * show only some edited pages
    */
-<<<<<<< HEAD
-  let numOfPages = 5;
-  jQuery('.loadable li').slice(0, 5).show();
-  jQuery('.loadMore').on('click', elem => {
-    elem.preventDefault();
-    numOfPages += 8;
-    jQuery('.loadable li').slice(0, numOfPages).slideDown();
-=======
   jQuery('.loadless').hide();
   jQuery('.loadable li').slice(0, 5).show();
 
@@ -48,6 +40,5 @@ jQuery(() => {
     jQuery(elem.currentTarget).siblings('.loadable').children('li').hide().slice(0, 5).show();
     jQuery(elem.currentTarget).siblings('.loadMore').show();
     jQuery(elem.currentTarget).css('visibility', 'hidden');
->>>>>>> 2244f3d... Sort edited pages alphabetically and make loadable
   });
 });

@@ -49,11 +49,11 @@
 	<div class="tt_address-detail-social">
 		<f:alias map="{user:'{og:getBackendUser(uid:address.oafwmUid)}'}">
 
-			<f:if condition="{user.social.oafwm_orcid} || {user.social.oafwm_twitter}} || {user.social.oafwm_xing} ||v{user.social.oafwm_linkedin}">
+			<f:if condition="{user.social.oafwm_orcid} || {user.social.oafwm_twitter}}">
 				<h4>Soziale Netzwerke</h4>
 			</f:if>
 
-			<f:for each="{0:'orcid', 1:'twitter', 2:'xing', 3:'linkedin'}" as="network" iteration="iterator">
+			<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
 
 				<f:if condition="{user.social.oafwm_{network}} != ''">
 					<div class="tt_address-detail-{network}" itemprop="{network}">
