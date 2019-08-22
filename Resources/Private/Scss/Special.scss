@@ -33,3 +33,9 @@
     cursor:pointer;
     visibility: hidden; /* only hidden, so that jQuery click can apply */
 }
+
+.grayedOut {
+    color: lightgrey;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
