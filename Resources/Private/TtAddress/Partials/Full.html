@@ -5,13 +5,30 @@
 
 
 <h2 itemprop="name" class="tt_address_detail-name">
-	<core:contentEditable table="tt_address" field="first_name" uid="{address.uid}">
-		{address.firstName}
-	</core:contentEditable>
-
-	<core:contentEditable table="tt_address" field="last_name" uid="{address.uid}">
-		{address.lastName}
-	</core:contentEditable>
+	<f:if condition="{address.firstName}">
+		<f:then>
+			<core:contentEditable table="tt_address" field="first_name" uid="{address.uid}">
+				{address.firstName}
+			</core:contentEditable>
+		</f:then>
+		<f:else>
+			<core:contentEditable table="tt_address" field="first_name" uid="{address.uid}">
+				<span class="grayedOut">Vorname</span>
+			</core:contentEditable>
+		</f:else>
+	</f:if>
+	<f:if condition="{address.lastName}">
+		<f:then>
+			<core:contentEditable table="tt_address" field="last_name" uid="{address.uid}">
+				{address.lastName}
+			</core:contentEditable>
+		</f:then>
+		<f:else>
+			<core:contentEditable table="tt_address" field="last_name" uid="{address.uid}">
+				<span class="grayedOut">Nachname</span>
+			</core:contentEditable>
+		</f:else>
+	</f:if>
 </h2>
 
 <div class="vcard tt_address_detail-personal" itemscope itemtype="http://schema.org/Person">
@@ -35,41 +52,62 @@
 <f:render partial="EditedPages" arguments="{_all}"/>
 
 <f:section name="content">
-	<f:if condition="{address.description}">
 		<div class="tt_address-detail-description" itemprop="description">
-			<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
-				{address.description}
-			</core:contentEditable>
+			<f:if condition="{address.description}">
+				<f:then>
+					<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
+						{address.description}
+					</core:contentEditable>
+				</f:then>
+				<f:else>
+					<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
+						<p class="grayedOut">
+						Platz für ein Profil
+						</p>
+					</core:contentEditable>
+				</f:else>
+			</f:if>
 		</div>
-	</f:if>
 </f:section>
 
 
 <f:section name="social">
 	<div class="tt_address-detail-social">
-		<f:alias map="{user:'{og:getBackendUser(uid:address.oafwmUid)}'}">
+		<f:alias
+			map="{pageOwner:'{address.oafwmUid}',
+			currentUser:'{og:getCurrentBackendUser()}'}">
 
-			<f:if condition="{user.social.oafwm_orcid} || {user.social.oafwm_twitter}}">
+			<f:if
+				condition="{pageOwner.social.oafwm_orcid} || {pageOwner.social.oafwm_twitter}} || {currentUser.uid} == {pageOwner}">
 				<h4>Soziale Netzwerke</h4>
+
+				<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
+
+					<f:if condition="{pageOwner.social.oafwm_{network}} != '' || {currentUser}">
+						<div class="tt_address-detail-{network}" itemprop="{network}">
+						<span class="social-logo">
+							<f:image
+								src="EXT:oafwm_gamification/Resources/Public/Images/Logos/{network}.png"
+								title="{f:format.case(mode:'capital', value:'{network}')}"/>
+						</span>
+							<span class="social-text">
+							<f:if condition="{user.social.oafwm_{network}}">
+								<f:then>
+									<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
+										{user.social.oafwm_{network}}
+									</core:contentEditable>
+								</f:then>
+								<f:else><!-- always have something to edit -->
+									<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
+										<span class="grayedOut">xxx</span>
+									</core:contentEditable>
+								</f:else>
+							</f:if>
+					</span>
+						</div>
+					</f:if>
+				</f:for>
 			</f:if>
-
-			<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
-
-				<f:if condition="{user.social.oafwm_{network}} != ''">
-					<div class="tt_address-detail-{network}" itemprop="{network}">
-					<span class="social-logo">
-						<f:image
-							src="EXT:oafwm_gamification/Resources/Public/Images/Logos/{network}.png"
-							title="{f:format.case(mode:'capital', value:'{network}')}"/>
-					</span>
-						<span class="social-text">
-						<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
-									{user.social.oafwm_{network}}
-						</core:contentEditable>
-					</span>
-					</div>
-				</f:if>
-			</f:for>
 
 		</f:alias>
 	</div>

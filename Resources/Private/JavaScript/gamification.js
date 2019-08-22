@@ -26,6 +26,14 @@ jQuery(() => {
    * show only some edited pages
    */
   jQuery('.loadless').hide();
+  jQuery('.loadable').each((index, elem) => {
+    if (jQuery(elem).children('li').length < 5) {
+      jQuery(elem).siblings('.loadMore').hide();
+    } else {
+      jQuery(elem).siblings('.loadMore').show();
+    }
+  });
+
   jQuery('.loadable li').slice(0, 5).show();
 
   jQuery('.loadMore').on('click', (elem) => {
