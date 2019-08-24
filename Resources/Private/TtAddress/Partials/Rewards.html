@@ -4,45 +4,20 @@
 
 <f:comment>Check, if user is logged in and is not part of the contoll group</f:comment>
 <f:alias
-	map="{backendUser:'{og:getCurrentBackendUser()}',
+	map="{
+	currentUser:'{og:getCurrentBackendUser()}',
+	pageOwnerId:'{address.oafwmUid}'
 	editedPages: '{og:getEditedPages(uid:address.oafwmUid)}',
-	numberOfEdits: '{og:getNumberOfEdits(uid:address.oafwmUid)}'}">
+	numberOfEdits: '{og:getEditedPages(uid:address.oafwmUid)}',
+  numberOfLogins: '{og:getNumberOfLogins(uid:address.oafwmUid)}'
+  }">
 
-		<f:if condition="{backendUser.groupname} == 'Badges' || {backendUser.groupname} == 'Level'">
+		<f:if condition="{currentUser.groupname} == 'Badges' || {currentUser.groupname} == 'Level'">
 			<div class="tt_address_detail-rewardImages">
-				<h3>{backendUser.groupname}</h3>
-				<h4>Login</h4>
-				<f:image src="EXT:oafwm_gamification/Resources/Public/Images/SingleLogin.png"
-								 alt="Badge für 1 Mal einloggen" title="Das erste Mal eingeloggt"/>
-				<f:alias map="{logins:'{og:getNumberOfLogins(uid:backendUser)}'}">
-					<f:if condition="{logins} > 10">
-						<f:image src="EXT:oafwm_gamification/Resources/Public/Images/MultipleLogin.png"
-										 alt="Badge für mehr als 10 Mal einloggen" title="Mehr als 10 Mal eingeloggt"/>
-					</f:if>
-				</f:alias>
+				<h3>Rewards</h3>
+				<f:render partial="Rewards/Login" arguments="{pageOwnerId:pageOwnerId, currentUser:currentUser, numberOfLogins:numberOfLogins}" />
 
-				<h4>Anzahl editierter Seiten</h4>
-				<f:if condition="{backendUser.groupname} == Badges">
-					<f:if condition="{editedPages -> f:count()} > 0">
-						<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/SingleEdit.png"
-										 alt="Eine Seite bearbeitet" title="Eine Seite bearbeitet"/>
-						<f:if condition="{editedPages -> f:count()} > 1">
-							<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Badges/MultiEdit.png"
-											 alt="Mehr als eine Seite bearbeitet" title="Mehr als eine Seite bearbeitet"/>
-						</f:if>
-					</f:if>
-				</f:if>
-
-				<f:if condition="{backendUser.groupname} == Level">
-					<f:if condition="{editedPages -> f:count()} > 0">
-						<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Levels/SingleEdit.png"
-										 alt="Eine Seite bearbeitet" title="Eine Seite bearbeitet"/>
-						<f:if condition="{editedPages -> f:count()} > 1">
-							<f:image src="EXT:oafwm_gamification/Resources/Public/Images/Levels/MultiEdit.png"
-											 alt="Mehr als eine Seite bearbeitet" title="Mehr als eine Seite bearbeitet"/>
-						</f:if>
-					</f:if>
-				</f:if>
+				<f:render partial="Rewards/Edits" arguments="{currentUser:currentUser, numberOfEdits:numberOfEdits, address:address, editedPages:editedPages}" />
 			</div>
 		</f:if>
 </f:alias>
