@@ -1,36 +1,36 @@
-<h4>Login</h4>
-
-<f:if condition="{currentUser.groupname} == 'Level'">
-	<!-- 50 logins mean max level 5 -->
-	<f:if condition="{numberOfLogins} > 50">
-		<f:then>
-			<f:variable name="numberOfLogins">50</f:variable>
-		</f:then>
-		<f:else>
-			<f:variable name="numberOfLogins">{numberOfLogins}</f:variable>
-		</f:else>
-	</f:if>
-
-	<f:variable name="level">
-		<f:format.number decimals="0">{numberOfLogins/10}</f:format.number>
-	</f:variable>
-	<div class="level-border">
-		<div class="level-bar login" style="width:{numberOfLogins*2}%">
-			Stufe {level}
-		</div>
-	</div>
-</f:if>
 
 
 <f:if condition="{currentUser.groupname} == 'Badges'">
-	<p>Badge für erstes Einloggen</p>
+	<f:if condition="{numberOfLogins} > 1">
+		<f:then>
+			<p>Badge für erstes mal eingeloggt</p>
+		</f:then>
+		<f:else>
+			<p class="grayedOut">Badge für erstes mal eingeloggt</p>
+		</f:else>
+	</f:if>
 	<f:if condition="{numberOfLogins} > 10">
-		<p>Badge für mehr als 10 mal eingeloggt</p>
+		<f:then>
+			<p>Badge für mehr als 10 mal eingeloggt</p>
+		</f:then>
+		<f:else>
+			<p class="grayedOut">Badge für mehr als 10 mal eingeloggt</p>
+		</f:else>
 	</f:if>
 	<f:if condition="{numberOfLogins} > 25">
-		<p>Badge für mehr als 25 mal eingeloggt</p>
+		<f:then>
+			<p>Badge für mehr als 25 mal eingeloggt</p>
+		</f:then>
+		<f:else>
+			<p class="grayedOut">Badge für mehr als 25 mal eingeloggt</p>
+		</f:else>
 	</f:if>
 	<f:if condition="{numberOfLogins} > 50">
-		<p>Badge für mehr als 50 mal eingeloggt</p>
+		<f:then>
+			<p>Badge für mehr als 50 mal eingeloggt</p>
+		</f:then>
+		<f:else>
+			<p class="grayedOut">Badge für mehr als 50 mal eingeloggt</p>
+		</f:else>
 	</f:if>
 </f:if>
