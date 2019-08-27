@@ -2,54 +2,63 @@
 			xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
-<f:variable name="numberOfEditedPages">{editedPages->f:count()}</f:variable>
-<f:variable name="level">0</f:variable>
-
-<h4>Editing</h4>
-
-<!-- first editor -->
-<f:if condition="{og:getFirstEdit(uid:address.oafwmUid, gid:8)}">
-	<f:if condition="{currentUser.groupname} == Badges">
-		<p>Badge für ersten Edit</p>
-	</f:if>
-	<f:if condition="{currentUser.groupname} == Level">
-		<f:variable name="level">{level +1}</f:variable>
-	</f:if>
-</f:if>
-
 <!-- edits of different topics -->
 
 <!-- number of edits -->
-<f:if condition="{numberOfEditedPages} > 0">
-	<f:if condition="{currentUser.groupname} == Badges">
-		<p>Badge für einen Beitrag verfasst</p>
-	</f:if>
-	<f:if condition="{currentUser.groupname} == Level">
-		<f:variable name="level">{level +1}</f:variable>
-	</f:if>
-</f:if>
-<f:if condition="{numberOfEditedPages} > 5">
-	<f:if condition="{currentUser.groupname} == Badges">
-		<p>Badge für mehr als 5 Beiträge verfasst</p>
-	</f:if>
-	<f:if condition="{currentUser.groupname} == Level">
-		<f:variable name="level">{level +1}</f:variable>
-	</f:if>
-</f:if>
+<f:alias map="{numberOfEditedPages: '{editedPages->f:count()}'}">
 
-<f:if condition="{numberOfEditedPages} > 10">
 	<f:if condition="{currentUser.groupname} == Badges">
-		<p>Badge für mehr als 10 Beiträge verfasst</p>
+		<f:if condition="{numberOfEditedPages} > 0">
+			<f:then>
+				<p>Badge für einen Beitrag verfasst</p>
+			</f:then>
+			<f:else>
+				<p class="grayedOut">Badge für einen Beitrag verfasst</p>
+			</f:else>
+		</f:if>
+		<f:if condition="{numberOfEditedPages} > 5">
+			<f:then>
+				<p>Badge für mehr als 5 Beiträge verfasst</p>
+			</f:then>
+			<f:else>
+				<p class="grayedOut">Badge für mehr als 5 Beiträge verfasst</p>
+			</f:else>
+		</f:if>
+		<f:if condition="{numberOfEditedPages} > 10">
+			<f:then>
+				<p>Badge für mehr als 10 Beiträge verfasst</p>
+			</f:then>
+			<f:else>
+				<p class="grayedOut">Badge für mehr als 10 Beiträge verfasst</p>
+			</f:else>
+		</f:if>
 	</f:if>
-	<f:if condition="{currentUser.groupname} == Level">
-		<f:variable name="level">{level +1}</f:variable>
-	</f:if>
-</f:if>
 
-<f:if condition="{currentUser.groupname} == Level">
-	<div class="level-border">
-		<div class="level-bar login" style="width:{level*10}%">
-			Stufe {level}
+	<f:if condition="{currentUser.groupname} == Level">
+
+		<f:variable name="level">0</f:variable>
+
+		<!-- simple edits -->
+		<f:if condition="{numberOfEdits} > 6">
+			<f:variable name="level">{level +1}</f:variable>
+		</f:if>
+		<f:if condition="{numberOfEdits} > 9">
+			<f:variable name="level">{level +1}</f:variable>
+		</f:if>
+		<f:if condition="{numberOfEdits} > 21">
+			<f:variable name="level">{level +1}</f:variable>
+		</f:if>
+		<f:if condition="{numberOfEdits} > 45">
+			<f:variable name="level">{level +1}</f:variable>
+		</f:if>
+		<f:if condition="{numberOfEdits} > 90">
+			<f:variable name="level">{level +1}</f:variable>
+		</f:if>
+
+		<div class="level-border">
+			<div class="level-bar login" style="width:{level*10}%">
+				Stufe {level}
+			</div>
 		</div>
-	</div>
-</f:if>
+	</f:if>
+</f:alias>

@@ -6,10 +6,10 @@
 <f:alias
 	map="{
 	currentUser:'{og:getCurrentBackendUser()}',
-	pageOwnerId:'{address.oafwmUid}'
+	pageOwnerId:'{address.oafwmUid}',
 	editedPages: '{og:getEditedPages(uid:address.oafwmUid)}',
-	numberOfEdits: '{og:getEditedPages(uid:address.oafwmUid)}',
-  numberOfLogins: '{og:getNumberOfLogins(uid:address.oafwmUid)}'
+  numberOfLogins: '{og:getNumberOfLogins(uid:address.oafwmUid)}',
+  numberOfEdits: '{og:getNumberOfEdits(uid:address.oafwmUid)}'
   }">
 
 		<f:if condition="{currentUser.groupname} == 'Badges' || {currentUser.groupname} == 'Level'">
@@ -17,7 +17,7 @@
 				<h3>Rewards</h3>
 				<f:render partial="Rewards/Login" arguments="{pageOwnerId:pageOwnerId, currentUser:currentUser, numberOfLogins:numberOfLogins}" />
 
-				<f:render partial="Rewards/Edits" arguments="{currentUser:currentUser, numberOfEdits:numberOfEdits, address:address, editedPages:editedPages}" />
+				<f:render partial="Rewards/Edits" arguments="{currentUser:currentUser, pageOwnerId:pageOwnerId, editedPages:editedPages, numberOfEdits:numberOfEdits}" />
 			</div>
 		</f:if>
 </f:alias>
