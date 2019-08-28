@@ -7,17 +7,32 @@
 	map="{
 	currentUser:'{og:getCurrentBackendUser()}',
 	pageOwnerId:'{address.oafwmUid}',
-	editedPages: '{og:getEditedPages(uid:address.oafwmUid)}',
+	editedPages: '{og:getEditedPages(uid:address.oafwmUid)->f:count()}',
   numberOfLogins: '{og:getNumberOfLogins(uid:address.oafwmUid)}',
   numberOfEdits: '{og:getNumberOfEdits(uid:address.oafwmUid)}'
   }">
 
-		<f:if condition="{currentUser.groupname} == 'Badges' || {currentUser.groupname} == 'Level'">
+		<f:if condition="{currentUser.groupname} == 'Badges'">
 			<div class="tt_address_detail-rewardImages">
 				<h3>Rewards</h3>
-				<f:render partial="Rewards/Login" arguments="{pageOwnerId:pageOwnerId, currentUser:currentUser, numberOfLogins:numberOfLogins}" />
+				<f:render partial="Rewards/Login" arguments="{
+				pageOwnerId:pageOwnerId,
+				currentUser:currentUser,
+				numberOfLogins:numberOfLogins}" />
 
-				<f:render partial="Rewards/Edits" arguments="{currentUser:currentUser, pageOwnerId:pageOwnerId, editedPages:editedPages, numberOfEdits:numberOfEdits}" />
+				<f:render partial="Rewards/Edits" arguments="{
+				editedPages:editedPages,
+				numberOfLogins:numberOfLogins}" />
 			</div>
 		</f:if>
+
+	<f:if condition="{currentUser.groupname} == 'Level'">
+
+		<div class="tt_address_detail-rewardImages">
+			<h3>Level</h3>
+			<f:render partial="Rewards/Level" arguments="{
+			editedPages:editedPages,
+			numberOfLogins:numberOfLogins}" />
+		</div>
+	</f:if>
 </f:alias>

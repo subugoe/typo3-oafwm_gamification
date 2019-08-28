@@ -1,36 +1,32 @@
-
-
-<f:if condition="{currentUser.groupname} == 'Badges'">
-	<f:if condition="{numberOfLogins} > 1">
-		<f:then>
-			<p>Badge für erstes mal eingeloggt</p>
-		</f:then>
-		<f:else>
-			<p class="grayedOut">Badge für erstes mal eingeloggt</p>
-		</f:else>
-	</f:if>
-	<f:if condition="{numberOfLogins} > 10">
-		<f:then>
-			<p>Badge für mehr als 10 mal eingeloggt</p>
-		</f:then>
-		<f:else>
-			<p class="grayedOut">Badge für mehr als 10 mal eingeloggt</p>
-		</f:else>
-	</f:if>
-	<f:if condition="{numberOfLogins} > 25">
-		<f:then>
-			<p>Badge für mehr als 25 mal eingeloggt</p>
-		</f:then>
-		<f:else>
-			<p class="grayedOut">Badge für mehr als 25 mal eingeloggt</p>
-		</f:else>
-	</f:if>
-	<f:if condition="{numberOfLogins} > 50">
-		<f:then>
-			<p>Badge für mehr als 50 mal eingeloggt</p>
-		</f:then>
-		<f:else>
-			<p class="grayedOut">Badge für mehr als 50 mal eingeloggt</p>
-		</f:else>
-	</f:if>
+<f:if condition="{numberOfLogins} > 1">
+	<f:then>
+		<p>Badge für erstes mal eingeloggt</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut">Badge für erstes mal eingeloggt</p>
+	</f:else>
+</f:if>
+<f:if condition="{numberOfLogins} > 10">
+	<f:then>
+		<p>Badge für mehr als 10 mal eingeloggt</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut">Badge für mehr als 10 mal eingeloggt</p>
+	</f:else>
+</f:if>
+<f:if condition="{numberOfLogins} > 25">
+	<f:then>
+		<p>Badge für mehr als 25 mal eingeloggt</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut">Badge für mehr als 25 mal eingeloggt</p>
+	</f:else>
+</f:if>
+<f:if condition="{numberOfLogins} > 50">
+	<f:then>
+		<p>Badge für mehr als 50 mal eingeloggt</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut">Badge für mehr als 50 mal eingeloggt</p>
+	</f:else>
 </f:if>
