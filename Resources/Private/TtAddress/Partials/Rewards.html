@@ -16,13 +16,14 @@
 			<div class="tt_address_detail-rewardImages">
 				<h3>Rewards</h3>
 				<f:render partial="Rewards/Login" arguments="{
-				pageOwnerId:pageOwnerId,
-				currentUser:currentUser,
-				numberOfLogins:numberOfLogins}" />
+				pageOwnerId: pageOwnerId,
+				currentUser: currentUser,
+				numberOfLogins: numberOfLogins}" />
 
 				<f:render partial="Rewards/Edits" arguments="{
-				editedPages:editedPages,
-				numberOfLogins:numberOfLogins}" />
+				numberOfEdits: numberOfEdits,
+				editedPages: editedPages,
+				numberOfLogins: numberOfLogins}" />
 			</div>
 		</f:if>
 
@@ -31,7 +32,7 @@
 		<div class="tt_address_detail-rewardImages">
 			<h3>Level</h3>
 			<f:render partial="Rewards/Level" arguments="{
-			editedPages:editedPages,
+			numberOfEdits: numberOfEdits,
 			numberOfLogins:numberOfLogins}" />
 		</div>
 	</f:if>

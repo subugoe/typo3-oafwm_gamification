@@ -1,4 +1,4 @@
-<f:if condition="{numberOfLogins} > 1">
+<f:if condition="{numberOfLogins} >= 1">
 	<f:then>
 		<p>Badge für erstes mal eingeloggt</p>
 	</f:then>
@@ -6,27 +6,27 @@
 		<p class="grayedOut">Badge für erstes mal eingeloggt</p>
 	</f:else>
 </f:if>
-<f:if condition="{numberOfLogins} > 10">
+<f:if condition="{numberOfLogins} >=5">
 	<f:then>
-		<p>Badge für mehr als 10 mal eingeloggt</p>
+		<p>Badge für mindestens 5 mal eingeloggt</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge für mehr als 10 mal eingeloggt</p>
+		<p class="grayedOut">Badge für mindestens 5 mal eingeloggt</p>
 	</f:else>
 </f:if>
-<f:if condition="{numberOfLogins} > 25">
+<f:if condition="{numberOfLogins} >= 50">
 	<f:then>
-		<p>Badge für mehr als 25 mal eingeloggt</p>
+		<p>Badge für mindestens 50 mal eingeloggt</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge für mehr als 25 mal eingeloggt</p>
+		<p class="grayedOut">Badge für mindestens 50 mal eingeloggt</p>
 	</f:else>
 </f:if>
-<f:if condition="{numberOfLogins} > 50">
+<f:if condition="{numberOfLogins} >= 250">
 	<f:then>
-		<p>Badge für mehr als 50 mal eingeloggt</p>
+		<p>Badge für mindestens 250 mal eingeloggt</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge für mehr als 50 mal eingeloggt</p>
+		<p class="grayedOut">Badge für mindestens 250 mal eingeloggt</p>
 	</f:else>
 </f:if>

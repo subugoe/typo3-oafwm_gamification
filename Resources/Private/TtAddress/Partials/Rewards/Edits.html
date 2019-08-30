@@ -1,43 +1,57 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-			xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
+			xmlns:v="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
 
-<!-- edits of different topics -->
+<!-- edits of different pages -->
+<f:if condition="{editedPages} >= 3">
+	<f:then>
+		<p>Badge für mindestens drei geänderte Seiten</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut">Badge für mindestens drei geänderte Seiten</p>
+	</f:else>
+</f:if>
 
 <!-- number of edits -->
+<f:if condition="{numberOfEdits} >= 1">
+	<f:then>
+		<p>Badge für mindestens eine Änderung</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut">Badge für mindestens eine Änderung</p>
+	</f:else>
+</f:if>
+<f:if condition="{numberOfEdits} >= 5">
+	<f:then>
+		<p>Badge für mindestens 5 Änderungen</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut">Badge für mindestens 5 Änderungen</p>
+	</f:else>
+</f:if>
+<f:if condition="{numberOfEdits} > 50">
+	<f:then>
+		<p>Badge für mindestens 50 Änderungen</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut">Badge für mindestens 50 Änderungen</p>
+	</f:else>
+</f:if>
+<f:if condition="{numberOfEdits} > 250">
+	<f:then>
+		<p>Badge für mindestens 250 Änderungen</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut">Badge für mindestens 250 Änderungen</p>
+	</f:else>
+</f:if>
 
-		<f:if condition="{editedPages} >= 1">
-			<f:then>
-				<p>Badge für eine editierte Seite</p>
-			</f:then>
-			<f:else>
-				<p class="grayedOut">Badge für eine editierte Seite</p>
-			</f:else>
-		</f:if>
-		<f:if condition="{editedPages} >= 5">
-			<f:then>
-				<p>Badge für 5 editierte Seiten</p>
-			</f:then>
-			<f:else>
-				<p class="grayedOut">Badge für 5 editierte Seiten</p>
-			</f:else>
-		</f:if>
-		<f:if condition="{editedPages} > 50">
-			<f:then>
-				<p>Badge für 5 editierte Seiten</p>
-			</f:then>
-			<f:else>
-				<p class="grayedOut">Badge für 5 editierte Seiten</p>
-			</f:else>
-		</f:if>
-	<f:if condition="{editedPages} > 150">
-		<f:then>
-			<p>Badge für 150 editierte Seiten</p>
-		</f:then>
-		<f:else>
-			<p class="grayedOut">Badge für 150 editierte Seiten</p>
-		</f:else>
-	</f:if>
-
-(Bis jetzt hast du {editedPages} Seiten editiert und dich {numberOfLogins} mal eingeloggt.)
+<f:if condition="{editedPages} != 1">
+	<f:then>
+		(Bis jetzt hast du {numberOfEdits} Änderungen auf {editedPages} Seiten gemacht und dich {numberOfLogins} mal eingeloggt.)
+	</f:then>
+	<f:else>
+		(Bis jetzt hast du {numberOfEdits} Änderungen auf einer Seite gemacht und dich {numberOfLogins} mal eingeloggt.)
+	</f:else>
+</f:if>
