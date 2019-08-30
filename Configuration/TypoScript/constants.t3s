@@ -1,3 +1,4 @@
+
 plugin.tx_substaff {
     view {
         templateRootPath = EXT:oafwm_gamification/Resources/Private/Templates/
@@ -8,8 +9,10 @@ plugin.tx_substaff {
 }
 
 
-plugin.tx_ttaddress {
-
+plugin.tx_tmplipoa {
+    settings {
+        excludeFromEditedPages = 1332
+    }
 }
 
 

@@ -1,6 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:v="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"
 			xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
-			xmlns:core="http://typo3.org/ns/TYPO3/CMS/FrontendEditing/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
 <main role="main" class="main">
@@ -10,10 +10,42 @@
 	<f:format.htmlentitiesDecode>
 		<f:cObject typoscriptObjectPath="lib.relContent.def"/>
 	</f:format.htmlentitiesDecode>
-	<f:render partial="PageEdited.html" arguments="{_all}"/>
+
+	<f:variable name="excluded" value="0"/>
+
+	<!-- exclude from page editing -->
+	<f:for each="{v:iterator.explode(content:'{exclude_from_page_editing}')}" as="exclude">
+		<f:if condition="{data.uid}=={exclude}">
+			<f:then>
+				<f:variable name="excluded" value="1"/>
+			</f:then>
+		</f:if>
+	</f:for>
+
+	<f:if condition="{excluded = 0}">
+	<!-- exclude page tree vom editing -->
+		<f:for each="{v:iterator.explode(content:'{exclude_tree_from_page_editing}')}" as="exclude">
+			<f:for each="{v:page.rootline()}" as="so1" key="k1">
+				<f:if condition="{exclude} == {so1.uid}">
+					<f:variable name="excluded" value="1"/>
+				</f:if>
+			</f:for>
+		</f:for>
+	</f:if>
+
+	<f:if condition="{excluded}">
+		<f:then></f:then>
+		<f:else>
+			<f:render partial="PageEdited.html" arguments="{_all}"/>
+		</f:else>
+	</f:if>
+
+
+
 
 	<!--TYPO3SEARCH_end-->
 	<f:if condition="{SEARCH_UID} == {data.uid}">
 		<f:render partial="Search.html" arguments="{_all}"/>
 	</f:if>
 </main>
+
