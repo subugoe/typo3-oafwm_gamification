@@ -3,37 +3,39 @@
 			data-namespace-typo3-fluid="true">
 
 <f:comment>
-	Show information about Editors of page, but not for service sites
+	Show information about date of last change and Editors of page
 </f:comment>
-<f:if condition="{data.uid} != {SEARCH_UID} &&
-{data.uid} != {IMPRESSUM_UID} &&
-{data.uid} != {KONTAKT_UID} &&
-{data.uid} != {PRIVACY_UID} &&
-{data.uid} != {NEWS_UID} &&
-{data.uid} != {NEWS_UID} &&
-{data.uid} != {SITEMAP_UID}">
-<f:alias map="{authorUids:'{og:getAuthorsOfPage(pid:data.uid)}'}">
-	Seit dem <f:format.date format="%d. %B %Y">{og:getBeginOfSyslog()}</f:format.date> bearbeitet von:
-	<f:for each="{authorUids}" as="res" iteration="iter">
-		<f:alias map="{user:'{og:getBackendUser(uid:res.userid)}'}">
-			<f:if condition="{user.username} != ''">
-				<f:if condition="{iter.isFirst}">
-					<f:then>
-						{user.username}
-					</f:then>
-					<f:else>
-						<f:if condition="{iter.isLast}">
-							<f:then>
-								und {user.username}
-							</f:then>
-							<f:else>
-								, {user.username}
-							</f:else>
-						</f:if>
-					</f:else>
+<f:alias map="{
+	authorUids:'{og:getAuthorsOfPage(pid:data.uid)}',
+		changeDate: '{og:getBeginOfSyslog()}'
+		}">
+
+	<f:if condition="{authorUids}">
+		<f:then>
+		Letzte Änderungen am
+		<f:format.date format="%d. %B %Y">{data.tstamp}</f:format.date>.
+		<br />
+		Author*innen:
+		<f:for each="{authorUids}" as="res" iteration="iter">
+			<f:alias map="{user:'{og:getBackendUser(uid:res.userid)}'}">
+				<f:if condition="{user.username}">
+					<f:if condition="{iter.isLast}">
+						<f:then>
+							{user.username} und
+						</f:then>
+						<f:else>
+							{user.username},
+						</f:else>
+					</f:if>
 				</f:if>
-			</f:if>
-		</f:alias>
-	</f:for>
+			</f:alias>
+		</f:for>
+		das IPOA-Redaktionsteam.
+		</f:then>
+		<f:else>
+			Letze Änderungen vor dem <f:format.date format="%d. %B %Y">{changeDate}</f:format.date> vom IPOA-Redaktionsteam.
+		</f:else>
+	</f:if>
+
 </f:alias>
-</f:if>
+
