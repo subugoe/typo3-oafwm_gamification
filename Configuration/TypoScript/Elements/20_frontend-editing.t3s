@@ -1,4 +1,6 @@
-
 [globalVar = BE_USER|user|usergroup = 8]
+    # This is absolutely necessary to view the admin panel
+    config.admPanel = 1
+
     #page.includeCSS.file193 = typo3conf/ext/tmpl_ipoa/Resources/Public/Css/cop.css
 [global]

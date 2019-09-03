@@ -99,9 +99,11 @@
     height: 200px;
 }
 
-.tt_address_list .image img {
+.tt_address_list img {
     width: 100%;
     height: auto;
+    filter: grayscale(100%);
+    border: 3px red;
 }
 
 .tt_address_list .addressName {
