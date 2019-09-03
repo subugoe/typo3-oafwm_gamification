@@ -19,7 +19,7 @@
 		<p>Badge für mindestens eine Änderung</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge für mindestens eine Änderung</p>
+		<p class="grayedOut">Badge</p>
 	</f:else>
 </f:if>
 <f:if condition="{numberOfEdits} >= 5">
@@ -27,7 +27,7 @@
 		<p>Badge für mindestens 5 Änderungen</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge für mindestens 5 Änderungen</p>
+		<p class="grayedOut">Badge</p>
 	</f:else>
 </f:if>
 <f:if condition="{numberOfEdits} > 50">
@@ -35,7 +35,7 @@
 		<p>Badge für mindestens 50 Änderungen</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge für mindestens 50 Änderungen</p>
+		<p class="grayedOut">Badge</p>
 	</f:else>
 </f:if>
 <f:if condition="{numberOfEdits} > 250">
@@ -43,15 +43,18 @@
 		<p>Badge für mindestens 250 Änderungen</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge für mindestens 250 Änderungen</p>
+		<p class="grayedOut">Badge</p>
 	</f:else>
 </f:if>
 
-<f:if condition="{editedPages} != 1">
-	<f:then>
-		(Bis jetzt hast du {numberOfEdits} Änderungen auf {editedPages} Seiten gemacht und dich {numberOfLogins} mal eingeloggt.)
-	</f:then>
-	<f:else>
-		(Bis jetzt hast du {numberOfEdits} Änderungen auf einer Seite gemacht und dich {numberOfLogins} mal eingeloggt.)
-	</f:else>
+<f:if condition="{f:be.security.ifHasRole(role='Administrator')}">
+	<f:if condition="{editedPages} != 1">
+		<f:then>
+			(Bis jetzt hast du {numberOfEdits} Änderungen auf {editedPages} Seiten gemacht und dich {numberOfLogins} mal
+			eingeloggt.)
+		</f:then>
+		<f:else>
+			(Bis jetzt hast du {numberOfEdits} Änderungen auf einer Seite gemacht und dich {numberOfLogins} mal eingeloggt.)
+		</f:else>
+	</f:if>
 </f:if>

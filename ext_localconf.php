@@ -20,3 +20,13 @@ if (!defined('TYPO3_MODE')) {
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:tmpl_ipoa/Configuration/TSConfig/COP.t3s">'
 );
 
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('
+        admPanel {
+                enable.edit = 1
+                module.edit.forceNoPopup = 1
+                module.edit.forceDisplayFieldIcons = 1
+                module.edit.forceDisplayIcons = 0
+                hide = 1
+        }
+        options.enableBookmarks = 1
+');
