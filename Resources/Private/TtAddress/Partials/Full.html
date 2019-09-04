@@ -52,24 +52,23 @@
 <f:render partial="EditedPages" arguments="{_all}"/>
 
 <f:section name="content">
-		<div class="tt_address-detail-description" itemprop="description">
-			<f:if condition="{address.description}">
-				<f:then>
-					<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
-						{address.description}
-					</core:contentEditable>
-				</f:then>
-				<f:else>
-					<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
-						<p class="grayedOut">
+	<div class="tt_address-detail-description" itemprop="description">
+		<f:if condition="{address.description}">
+			<f:then>
+				<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
+					{address.description}
+				</core:contentEditable>
+			</f:then>
+			<f:else>
+				<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
+					<p class="grayedOut">
 						Platz für ein Profil
-						</p>
-					</core:contentEditable>
-				</f:else>
-			</f:if>
-		</div>
+					</p>
+				</core:contentEditable>
+			</f:else>
+		</f:if>
+	</div>
 </f:section>
-
 
 <f:section name="social">
 	<div class="tt_address-detail-social">
@@ -78,23 +77,26 @@
 			currentUser:'{og:getCurrentBackendUser()}'}">
 
 			<f:if
-				condition="{pageOwner.social.oafwm_orcid} || {pageOwner.social.oafwm_twitter}} || {currentUser.uid} == {pageOwner}">
+				condition="{address.oafwmOrcid} || {address.oafwmTwitter}} || {currentUser.uid} == {pageOwner}">
+
 				<h4>Soziale Netzwerke</h4>
 
-				<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
 
-					<f:if condition="{pageOwner.social.oafwm_{network}} != '' || {currentUser}">
-						<div class="tt_address-detail-{network}" itemprop="{network}">
+				<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
+					<f:alias map="{cnetwork: \"{f:format.case(mode:'capital', value:'{network}')}\"}">
+
+						<f:if condition="{address.oafwm{cnetwork}} != '' || {currentUser}">
+							<div class="tt_address-detail-{network}" itemprop="{network}">
 						<span class="social-logo">
 							<f:image
 								src="EXT:oafwm_gamification/Resources/Public/Images/Logos/{network}.png"
-								title="{f:format.case(mode:'capital', value:'{network}')}"/>
+								title="{cnetwork}"/>
 						</span>
-							<span class="social-text">
-							<f:if condition="{user.social.oafwm_{network}}">
+								<span class="social-text">
+							<f:if condition="{address.oafwm{cnetwork}}">
 								<f:then>
 									<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
-										{user.social.oafwm_{network}}
+										{address.oafwm{cnetwork}}
 									</core:contentEditable>
 								</f:then>
 								<f:else><!-- always have something to edit -->
@@ -104,8 +106,9 @@
 								</f:else>
 							</f:if>
 					</span>
-						</div>
-					</f:if>
+							</div>
+						</f:if>
+					</f:alias>
 				</f:for>
 			</f:if>
 

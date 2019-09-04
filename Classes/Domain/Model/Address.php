@@ -39,6 +39,16 @@ class Address extends \FriendsOfTYPO3\TtAddress\Domain\Model\Address
     protected $oafwmGroupname;
 
     /**
+     * @var string
+     */
+    protected $oafwmOrcid;
+
+    /**
+     * @var string
+     */
+    protected $oafwmTwitter;
+
+    /**
      * @return integer
      */
     public function getOafwmUid()
