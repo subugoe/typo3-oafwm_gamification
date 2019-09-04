@@ -1,5 +1,4 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-			xmlns:v="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
 
@@ -47,14 +46,3 @@
 	</f:else>
 </f:if>
 
-<f:if condition="{f:be.security.ifHasRole(role='Administrator')}">
-	<f:if condition="{editedPages} != 1">
-		<f:then>
-			(Bis jetzt hast du {numberOfEdits} Änderungen auf {editedPages} Seiten gemacht und dich {numberOfLogins} mal
-			eingeloggt.)
-		</f:then>
-		<f:else>
-			(Bis jetzt hast du {numberOfEdits} Änderungen auf einer Seite gemacht und dich {numberOfLogins} mal eingeloggt.)
-		</f:else>
-	</f:if>
-</f:if>
