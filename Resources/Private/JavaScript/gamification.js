@@ -1,8 +1,7 @@
+/**
+ * remove edit icons for tt_address plugin page
+ */
 jQuery(() => {
-
-  /**
-   * remove edit icons for tt_address plugin page
-   */
   if (window.location.pathname === '/ueber-uns/autoren' || window.location.pathname === '/ueber-uns/autoren/autorin') {
     jQuery('.t3-frontend-editing__inline-actions span[title^="Edit"]').css('display', 'none');
     console.log('Authoren');
@@ -50,4 +49,18 @@ jQuery(() => {
     jQuery(elem.currentTarget).siblings('.loadMore').show();
     jQuery(elem.currentTarget).css('visibility', 'hidden');
   });
+
+  /**
+   * center images
+   */
+  jQuery('.centeredImage img').each((index, elem) => {
+    if (jQuery(elem).height() > jQuery(elem).width()) {
+      jQuery(elem).css({'width': '200px',
+'height': 'auto'});
+    } else {
+      jQuery(elem).css({'height': '200px',
+'width': 'auto'});
+    }
+  });
+
 });

@@ -6,3 +6,4 @@
     auth.BE.redirectToURL = ./../ueber-uns/autoren
 [end]
 
+config.frontend_editing = 1

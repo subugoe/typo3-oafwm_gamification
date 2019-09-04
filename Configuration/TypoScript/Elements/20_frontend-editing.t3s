@@ -4,3 +4,6 @@
 
     #page.includeCSS.file193 = typo3conf/ext/tmpl_ipoa/Resources/Public/Css/cop.css
 [global]
+
+config.frontend_editing = 1
+config.admPanel = 1
