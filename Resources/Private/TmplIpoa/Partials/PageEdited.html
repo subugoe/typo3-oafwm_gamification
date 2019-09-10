@@ -6,31 +6,27 @@
 	Show information about date of last change and Editors of page
 </f:comment>
 <f:alias map="{
-	authorUids:'{og:getAuthorsOfPage(pid:data.uid)}',
+	authors:'{og:getAuthorsOfPage(pid:data.uid)}',
 		changeDate: '{og:getBeginOfSyslog()}'
 		}">
 
-	<f:if condition="{authorUids}">
+	<f:if condition="{authors}">
 		<f:then>
-		Letzte Änderungen am
-		<f:format.date format="%d. %B %Y">{data.tstamp}</f:format.date>.
-		<br />
-		Author*innen:
-		<f:for each="{authorUids}" as="res" iteration="iter">
-			<f:alias map="{user:'{og:getBackendUser(uid:res.userid)}'}">
-				<f:if condition="{user.username}">
-					<f:if condition="{iter.isLast}">
-						<f:then>
-							{user.username} und
-						</f:then>
-						<f:else>
-							{user.username},
-						</f:else>
-					</f:if>
+			Letzte Änderungen am
+			<f:format.date format="%d. %B %Y">{data.tstamp}</f:format.date>.
+			<br />
+			Author*innen:
+			<f:for each="{authors}" as="author" iteration="iter">
+				<f:if condition="{iter.isLast}">
+					<f:then>
+						{author.realName} und
+					</f:then>
+					<f:else>
+						{author.realName},
+					</f:else>
 				</f:if>
-			</f:alias>
-		</f:for>
-		das IPOA-Redaktionsteam.
+			</f:for>
+			das IPOA-Redaktionsteam.
 		</f:then>
 		<f:else>
 			Letze Änderungen vor dem <f:format.date format="%d. %B %Y">{changeDate}</f:format.date> vom IPOA-Redaktionsteam.
@@ -38,4 +34,3 @@
 	</f:if>
 
 </f:alias>
-

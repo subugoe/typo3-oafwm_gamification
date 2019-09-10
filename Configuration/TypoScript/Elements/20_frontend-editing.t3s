@@ -6,4 +6,4 @@
 [global]
 
 config.frontend_editing = 1
-config.admPanel = 1
+#config.admPanel = 1

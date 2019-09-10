@@ -34,40 +34,52 @@ use \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 
 /**
- * Class GetAuthorsOfPageViewHelper
+ * Class GetEditedPagesNamesViewHelper
+ *
+ * Returns associative array with page titles and uids as their value
+ * e.g: Anleitungen -> 1291
  * @package Subugoe\OafwmGamification\ViewHelpers
  */
-class GetAuthorsOfPageViewHelper extends AbstractViewHelper
+class GetEditedPagesNamesViewHelper extends AbstractViewHelper
 {
 
-    // SELECT be_users.realName FROM `be_users`
-    //    INNER JOIN `sys_log` ON `be_users`.`uid` = `sys_log`.`userid`
-    //    WHERE `sys_log`.`event_pid` = 200 AND `sys_log`.`tablename`= "tt_content"
-    //    ORDER BY `be_users`.`realName` DESC
-    protected function getAuthorsOfPage($pid)
+    // SELECT pages.title FROM `pages`
+    //    INNER JOIN `sys_log` ON `pages`.`uid` = `sys_log`.`event_pid`
+    //    WHERE `sys_log`.`userid` = 3 AND `sys_log`.`tablename`= "tt_content"
+    //    AND `pages`.`hidden` = 0 AND `pages`.`doktype` = 1 AND `pages`.`sys_language_uid` = 0 AND `pages`.`deleted` = 0
+    //    GROUP BY `pages`.`slug`
+    //    ORDER BY `sys_log`.`tstamp` DESC
+
+    protected function getPagesNames($id)
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('be_users');
+            ->getQueryBuilderForTable('pages');
 
-        $authors = $queryBuilder
-            ->select('be_users.realName','log.tstamp')
-            ->from('be_users')
+        $pages = $queryBuilder
+            ->select('pages.title','pages.slug','log.tstamp')
+            ->from('pages')
             ->join(
-                'be_users',
+                'pages',
                 'sys_log',
                 'log',
-                $queryBuilder->expr()->eq('log.userid', $queryBuilder->quoteIdentifier('be_users.uid'))
+                $queryBuilder->expr()->eq('log.event_pid', $queryBuilder->quoteIdentifier('pages.uid'))
             )
             ->where(
-                $queryBuilder->expr()->eq('log.event_pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('log.userid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->eq('log.tablename', $queryBuilder->createNamedParameter('tt_content')),
-                $queryBuilder->expr()->neq('be_users.realName', $queryBuilder->createNamedParameter(''))
+                $queryBuilder->expr()->eq('pages.hidden', $queryBuilder->createNamedParameter('0')),
+                $queryBuilder->expr()->eq('pages.deleted', $queryBuilder->createNamedParameter('0')),
+                $queryBuilder->expr()->eq('pages.doktype', $queryBuilder->createNamedParameter('1')),
+                $queryBuilder->expr()->eq('pages.sys_language_uid', $queryBuilder->createNamedParameter('0'))
             )
-            ->groupBy('be_users.realName')
+            ->orderBy('log.tstamp', 'DESC')
+            ->groupBy('pages.slug')
             ->execute()
             ->fetchAll();
-        return $authors;
+        return $pages;
     }
+
+
 
     /**
      * Initialize all arguments. You need to override this method and call
@@ -78,7 +90,7 @@ class GetAuthorsOfPageViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         parent::initializeArguments();
-        $this->registerArgument('pid', 'integer', 'Pid of page', true);
+        $this->registerArgument('uid', 'integer', 'Uid of user to show the edited pages for', true);
     }
 
     /**
@@ -86,10 +98,9 @@ class GetAuthorsOfPageViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $pid = $this->arguments['pid'];
-        $authors = $this->getAuthorsOfPage($pid);
-
-        return $authors;
+        $uid = $this->arguments['uid'];
+        $pages = $this->getPagesNames($uid);
+        return $pages;
     }
 }
 
