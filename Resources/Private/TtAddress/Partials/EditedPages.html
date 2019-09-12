@@ -1,15 +1,14 @@
 <html xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
 			xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-			xmlns:v="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
-<f:if condition="{og:getEditedPages(uid:address.oafwmUid) -> f:count()} > 0}">
+<f:if condition="{editedPages -> f:count()} > 0}">
 	<div class="tt_address_detail-editedPages">
 		<h4>Kürzlich bearbeitete Seiten</h4>
 		<ul class="loadable">
-			<f:for each="{og:getEditedPages(uid:address.oafwmUid)}" as="page" key="pagesKey">
+			<f:for each="{editedPages}" as="page">
 				<li>
-					<f:link.page pageUid="{page}">{pagesKey}</f:link.page>
+					<a href="{page.slug}">{page.title}</a>
 				</li>
 			</f:for>
 		</ul>
@@ -25,3 +24,4 @@
 		</a>
 	</div>
 </f:if>
+</html>

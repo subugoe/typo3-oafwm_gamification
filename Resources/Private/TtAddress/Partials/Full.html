@@ -47,9 +47,27 @@
 	<f:render section="social" arguments="{_all}"/>
 </div>
 
-<f:render partial="Rewards" arguments="{_all}"/>
+<f:alias map="{
+	currentUser:'{og:getCurrentBackendUser()}',
+	pageOwnerId:'{address.oafwmUid}',
+	editedPages: '{og:getEditedPagesNames(uid:address.oafwmUid)}',
+  numberOfLogins: '{og:getNumberOfLogins(uid:address.oafwmUid)}',
+  numberOfEdits: '{og:getNumberOfEdits(uid:address.oafwmUid)}'
+}">
+<f:render partial="Rewards" arguments="{
+	currentUser: currentUser,
+	pageOwnerID: pageOwnerId,
+	editedPages: editedPages,
+	numberOfLogins: numberOfLogins,
+	numberOfEdits: numberOfEdits}"/>
 
-<f:render partial="EditedPages" arguments="{_all}"/>
+<f:render partial="EditedPages" arguments="{
+	currentUser: currentUser,
+	pageOwnerID: pageOwnerId,
+	editedPages: editedPages,
+	numberOfLogins: numberOfLogins,
+	numberOfEdits: numberOfEdits}"/>
+</f:alias>
 
 <f:section name="content">
 	<div class="tt_address-detail-description" itemprop="description">
@@ -85,14 +103,14 @@
 				<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
 					<f:alias map="{cnetwork: \"{f:format.case(mode:'capital', value:'{network}')}\"}">
 
-						<f:if condition="{address.oafwm{cnetwork}} != '' || {currentUser}">
-							<div class="tt_address-detail-{network}" itemprop="{network}">
+					<f:if condition="{address.oafwm{cnetwork}} != '' || {currentUser}">
+						<div class="tt_address-detail-{network}" itemprop="{network}">
 						<span class="social-logo">
 							<f:image
 								src="EXT:oafwm_gamification/Resources/Public/Images/Logos/{network}.png"
 								title="{cnetwork}"/>
 						</span>
-								<span class="social-text">
+							<span class="social-text">
 							<f:if condition="{address.oafwm{cnetwork}}">
 								<f:then>
 									<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
@@ -106,11 +124,11 @@
 								</f:else>
 							</f:if>
 					</span>
-							</div>
-						</f:if>
-					</f:alias>
-				</f:for>
-			</f:if>
+						</div>
+					</f:if>
+		</f:alias>
+		</f:for>
+		</f:if>
 
 		</f:alias>
 	</div>

@@ -2,7 +2,7 @@
 [globalVar = BE_USER|user|usergroup = 8]
     RTE.default.preset = cop
     # the following doesn't work here, it is in COP usergroup TSconfig
-    admPanel.enable.all = 1
+#    admPanel.enable.all = 1
     auth.BE.redirectToURL = ./../ueber-uns/autoren
 [end]
 
