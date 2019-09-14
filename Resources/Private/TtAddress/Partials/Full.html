@@ -54,14 +54,14 @@
   numberOfLogins: '{og:getNumberOfLogins(uid:address.oafwmUid)}',
   numberOfEdits: '{og:getNumberOfEdits(uid:address.oafwmUid)}'
 }">
-<f:render partial="Rewards" arguments="{
+	<f:render partial="Rewards" arguments="{
 	currentUser: currentUser,
 	pageOwnerID: pageOwnerId,
 	editedPages: editedPages,
 	numberOfLogins: numberOfLogins,
 	numberOfEdits: numberOfEdits}"/>
 
-<f:render partial="EditedPages" arguments="{
+	<f:render partial="EditedPages" arguments="{
 	currentUser: currentUser,
 	pageOwnerID: pageOwnerId,
 	editedPages: editedPages,
@@ -99,38 +99,76 @@
 
 				<h4>Soziale Netzwerke</h4>
 
-
 				<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
-					<f:alias map="{cnetwork: \"{f:format.case(mode:'capital', value:'{network}')}\"}">
 
-					<f:if condition="{address.oafwm{cnetwork}} != '' || {currentUser}">
+					<f:alias map="{cnetwork: '{f:format.case(mode:\'capital\', value:\'{network}\')}'}">
 						<div class="tt_address-detail-{network}" itemprop="{network}">
-						<span class="social-logo">
-							<f:image
-								src="EXT:oafwm_gamification/Resources/Public/Images/Logos/{network}.png"
-								title="{cnetwork}"/>
-						</span>
-							<span class="social-text">
-							<f:if condition="{address.oafwm{cnetwork}}">
+
+							<f:if condition="{currentUser.uid} == {pageOwner}">
 								<f:then>
-									<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
-										{address.oafwm{cnetwork}}
-									</core:contentEditable>
+									<f:render section="socialEntry-withoutLink" arguments="{
+										network: '{network}',
+										cnetwork: '{cnetwork}',
+										entry: '{address.oafwm{cnetwork}}',
+										address: '{address}'
+								}"/>
 								</f:then>
-								<f:else><!-- always have something to edit -->
-									<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
-										<span class="grayedOut">xxx</span>
-									</core:contentEditable>
+								<f:else>
+									<f:if condition="{address.oafwm{cnetwork}}">
+										<f:render section="socialEntry-withLink" arguments="{
+											twitterLink: 'https://twitter.com/{v:format.trim(content: \'{address.oafwm{cnetwork}}\', characters: \'@\')}',
+											orcidLink: 'https://orcid.org/{v:format.trim(content: \'{address.oafwm{cnetwork}}\', characters: \'https://orcid.org/\')}',
+											network: '{network}',
+											cnetwork: '{cnetwork}',
+											entry: '{address.oafwm{cnetwork}}'
+										}"/>
+									</f:if>
 								</f:else>
 							</f:if>
-					</span>
-						</div>
-					</f:if>
-		</f:alias>
-		</f:for>
-		</f:if>
 
+						</div>
+					</f:alias>
+
+				</f:for>
+
+			</f:if>
 		</f:alias>
 	</div>
+</f:section>
+
+<!-- only when owner not logged in -->
+<f:section name="socialEntry-withLink">
+	<span class="social-logo">
+			<f:image
+				src="EXT:oafwm_gamification/Resources/Public/Images/Logos/{network}.png"
+				title="{cnetwork}"/>
+		</span>
+	<span class="social-text">
+		<a href="{{network}Link}">{entry}</a>
+	</span>
+</f:section>
+
+<!-- when backend user = owner -->
+<f:section name="socialEntry-withoutLink">
+	<span class="social-logo">
+	<f:image
+		src="EXT:oafwm_gamification/Resources/Public/Images/Logos/{network}.png"
+		title="{cnetwork}"/>
+	</span>
+	<span class="social-text">
+	<f:if condition="{entry}">
+		<f:then>
+			<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
+				{entry}
+			</core:contentEditable>
+		</f:then>
+		<f:else>
+			<!-- always have something to edit -->
+			<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
+				<span class="grayedOut">xxx</span>
+			</core:contentEditable>
+		</f:else>
+	</f:if>
+		</span>
 </f:section>
 </html>
