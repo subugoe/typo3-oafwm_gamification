@@ -1,7 +1,20 @@
 page.includeCSS {
-    file1 = typo3conf/ext/oafwm_gamification/Resources/Public/Css/gamification.css
+    file10 = typo3conf/ext/oafwm_gamification/Resources/Public/Css/gamification.css
 }
 
 page.includeJS {
-    file1 = typo3conf/ext/oafwm_gamification/Resources/Public/JavaScript/gamification.js
+    file10 = typo3conf/ext/oafwm_gamification/Resources/Public/JavaScript/gamification.js
 }
+
+[globalVar = BE_USER|user|usergroup = 8]
+
+    page.includeCSS {
+        file20 = typo3conf/ext/oafwm_gamification/Resources/Public/Css/fe.css
+    }
+
+    page.includeJS {
+        file20 = typo3conf/ext/oafwm_gamification/Resources/Public/JavaScript/fe.js
+    }
+
+[end]
+
