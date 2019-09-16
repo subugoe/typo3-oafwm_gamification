@@ -9,10 +9,3 @@ plugin.tx_substaff {
 }
 
 
-plugin.tx_tmplipoa {
-    settings {
-        excludeFromEditedPages = 1332
-    }
-}
-
-
