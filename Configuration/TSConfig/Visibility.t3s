@@ -35,3 +35,6 @@ TCEFORM.tt_address {
     categories.disabled = 1
 }
 
+TCEFORM.tt_content.CType.removeItems (
+    table
+)
