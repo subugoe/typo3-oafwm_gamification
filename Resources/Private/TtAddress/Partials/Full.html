@@ -31,16 +31,14 @@
 	</f:if>
 </h2>
 
-<div class="vcard tt_address_detail-personal" itemscope itemtype="http://schema.org/Person">
+<div class="tt_address_detail-personal" itemscope itemtype="http://schema.org/Person">
 
 	<f:if condition="{address.image}">
-		<div class="">
-			<div class="roundedImage">
+			<div class="tt_address_detail-personal-image">
 				<f:image image="{address.firstImage}" width="600"
 								 alt="{img.originalResource.alt}"
 								 title="{img.originalResource.title}"
 								 additionalAttributes="{itemprop:'image'}"/>
-			</div>
 		</div>
 	</f:if>
 	<f:render section="content" arguments="{_all}"/>
@@ -97,7 +95,7 @@
 			<f:if
 				condition="{address.oafwmOrcid} || {address.oafwmTwitter}} || {currentUser.uid} == {pageOwner}">
 
-				<h4>Soziale Netzwerke</h4>
+				<h4 class="tt_address-detail-social-header">Soziale Netzwerke</h4>
 
 				<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
 

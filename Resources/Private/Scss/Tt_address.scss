@@ -15,7 +15,7 @@
     padding-left: 0;
 }
 
-.tt_address_detail-personal h4 {
+.tt_address-detail-social-header {
     margin-bottom: 4px;
 }
 
@@ -37,8 +37,14 @@
     margin: 12px 0 12px 12px;
 }
 
-.tt_address_detail-personal .roundedImage {
+.tt_address_detail-personal-image {
     margin: 20px 0;
+    width: 300px;
+
+    img {
+        width: 100%;
+        height: auto;
+    }
 }
 
 .tt_address_detail-editedPages {
