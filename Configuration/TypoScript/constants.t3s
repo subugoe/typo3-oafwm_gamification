@@ -5,7 +5,7 @@ plugin.tx_substaff {
         partialRootPath = EXT:oafwm_gamification/Resources/Private/Partials/
         layoutRootPath = EXT:oafwm_gamification/Resources/Private/Layouts/
     }
-
 }
+
 
 
