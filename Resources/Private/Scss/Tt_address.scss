@@ -24,16 +24,22 @@
     flex-direction: column;
 }
 
-.tt_address_detail-rewardImages {
+.tt_address_detail-rewards {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     width: 50%;
 }
 
-.tt_address_detail-rewardImages img {
+.tt_address-detail-reward-images {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.tt_address-detail-reward-images svg {
     width: 100px;
-    height: auto;
+    height: 100px;
     margin: 12px 0 12px 12px;
 }
 

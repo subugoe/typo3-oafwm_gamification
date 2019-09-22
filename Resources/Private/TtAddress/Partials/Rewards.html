@@ -4,28 +4,32 @@
 
 <f:comment>Check, if user is logged in and is not part of the contoll group</f:comment>
 
-
-		<f:if condition="{currentUser.groupname} == 'Badges'">
-			<div class="tt_address_detail-rewardImages">
-				<h3>Rewards</h3>
-				<f:render partial="Rewards/Login" arguments="{
-				pageOwnerId: pageOwnerId,
-				currentUser: currentUser,
-				numberOfLogins: numberOfLogins}" />
-
-				<f:render partial="Rewards/Edits" arguments="{
-				numberOfEdits: numberOfEdits,
-				editedPages: editedPages,
-				numberOfLogins: numberOfLogins}" />
-			</div>
-		</f:if>
-
-	<f:if condition="{currentUser.groupname} == 'Level'">
-
-		<div class="tt_address_detail-rewardImages">
-			<h3>Level</h3>
-			<f:render partial="Rewards/Level" arguments="{
-			numberOfEdits: numberOfEdits,
-			numberOfLogins:numberOfLogins}" />
+<f:render partial="Badges"/>
+<f:if condition="{currentUser.groupname} == 'Badges'">
+	<div class="tt_address_detail-rewards">
+		<h3>Rewards</h3>
+		<div class="tt_address-detail-reward-images">
+			<f:render partial="Rewards/Login" arguments="{
+						pageOwnerId: pageOwnerId,
+						currentUser: currentUser,
+						numberOfLogins: numberOfLogins}"/>
+			<br />
+			<f:render partial="Rewards/Edits" arguments="{
+						numberOfEdits: numberOfEdits,
+						editedPages: editedPages,
+						numberOfLogins: numberOfLogins}"/>
+			<br />
+			<f:render partial="Rewards/OA-Tage" arguments="{
+						numberOfOADays: numberOfOADays}"/>
 		</div>
-	</f:if>
+	</div>
+</f:if>
+
+<f:if condition="{currentUser.groupname} == 'Level'">
+	<div class="tt_address_detail-rewards">
+		<h3>Level</h3>
+		<f:render partial="Rewards/Level" arguments="{
+			numberOfEdits: numberOfEdits,
+			numberOfLogins:numberOfLogins}"/>
+	</div>
+</f:if>

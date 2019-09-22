@@ -1,0 +1,53 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			data-namespace-typo3-fluid="true">
+
+<f:if condition="{numberOfOADays} >= 1">
+	<f:then>
+		<p title="1 OA-Tage besucht">
+			<svg class="icon icon-oa-tage-1">
+				<use xlink:href="#icon-oa-tage-1" />
+			</svg>
+		</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-oa-tage-1">
+				<use xlink:href="#icon-oa-tage-1" />
+			</svg>
+		</p>
+	</f:else>
+</f:if>
+
+<f:if condition="{numberOfOADays} >= 3">
+	<f:then>
+		<p title="Mindestens 3 OA-Tage besucht">
+			<svg class="icon icon-oa-tage-3">
+				<use xlink:href="#icon-oa-tage-3" />
+			</svg>
+		</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-oa-tage-3">
+				<use xlink:href="#icon-oa-tage-3" />
+			</svg>
+		</p>
+	</f:else>
+</f:if>
+
+<f:if condition="{numberOfOADays} >= 5">
+	<f:then>
+		<p title="Mindestens 5 OA-Tage besucht">
+			<svg class="icon icon-oa-tage-5">
+				<use xlink:href="#icon-oa-tage-5" />
+			</svg>
+		</p>
+	</f:then>
+	<f:else>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-oa-tage-5">
+				<use xlink:href="#icon-oa-tage-5" />
+			</svg>
+		</p>
+	</f:else>
+</f:if>
