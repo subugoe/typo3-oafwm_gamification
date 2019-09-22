@@ -5,44 +5,87 @@
 <!-- edits of different pages -->
 <f:if condition="{editedPages} >= 3">
 	<f:then>
-		<p>Badge für mindestens drei geänderte Seiten</p>
+		<p title="3 Seiten bearbeitet">
+			<svg class="icon icon-edits-3">
+				<use xlink:href="#icon-edits-3" />
+			</svg>
+		</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge für mindestens drei geänderte Seiten</p>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-edits-3">
+				<use xlink:href="#icon-edits-3" />
+			</svg>
+		</p>
 	</f:else>
 </f:if>
-
+<br />
 <!-- number of edits -->
 <f:if condition="{numberOfEdits} >= 1">
 	<f:then>
-		<p>Badge für mindestens eine Änderung</p>
+		<p title="1 Änderung">
+			<svg class="icon icon-beitrag-1">
+				<use xlink:href="#icon-beitrag-1" />
+			</svg>
+		</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge</p>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-beitrag-1">
+				<use xlink:href="#icon-beitrag-1" />
+			</svg>
+		</p>
 	</f:else>
 </f:if>
+
 <f:if condition="{numberOfEdits} >= 5">
 	<f:then>
-		<p>Badge für mindestens 5 Änderungen</p>
+		<p title="5 Änderungen">
+			<svg class="icon icon-beitraege-5">
+			<use xlink:href="#icon-beitraege-5" />
+		</svg>
+		</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge</p>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-beitraege-5">
+				<use xlink:href="#icon-beitraege-5" />
+			</svg>
+		</p>
 	</f:else>
 </f:if>
+
 <f:if condition="{numberOfEdits} > 50">
 	<f:then>
-		<p>Badge für mindestens 50 Änderungen</p>
+		<p title="50 Änderungen">
+			<svg class="icon icon-beitraege-50">
+				<use xlink:href="#icon-beitraege-50" />
+			</svg>
+		</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge</p>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-beitraege-50">
+				<use xlink:href="#icon-beitraege-50" />
+			</svg>
+		</p>
 	</f:else>
 </f:if>
+
 <f:if condition="{numberOfEdits} > 250">
 	<f:then>
-		<p>Badge für mindestens 250 Änderungen</p>
+		<p title="250 Änderungen">
+			<svg class="icon icon-beitraege-250">
+				<use xlink:href="#icon-beitraege-250" />
+			</svg>
+		</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge</p>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-beitraege-250">
+				<use xlink:href="#icon-beitraege-250" />
+			</svg>
+		</p>
 	</f:else>
 </f:if>
 

@@ -1,32 +1,64 @@
 <f:if condition="{numberOfLogins} >= 1">
 	<f:then>
-		<p>Badge für erstes mal eingeloggt</p>
+		<p title="1 login">
+			<svg class="icon icon-login-1">
+				<use xlink:href="#icon-login-1" />
+			</svg>
+		</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge</p>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-login-1">
+				<use xlink:href="#icon-login-1" />
+			</svg>
+		</p>
 	</f:else>
 </f:if>
 <f:if condition="{numberOfLogins} >=5">
 	<f:then>
-		<p>Badge für mindestens 5 mal eingeloggt</p>
+		<p title="5 logins">
+			<svg class="icon icon-login-5">
+				<use xlink:href="#icon-login-5" />
+			</svg>
+		</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge</p>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-login-5">
+				<use xlink:href="#icon-login-5" />
+			</svg>
+		</p>
 	</f:else>
 </f:if>
 <f:if condition="{numberOfLogins} >= 50">
 	<f:then>
-		<p>Badge für mindestens 50 mal eingeloggt</p>
+		<p title="50 logins">
+			<svg class="icon icon-login-50">
+				<use xlink:href="#icon-login-50" />
+			</svg>
+		</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge</p>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-login-50">
+				<use xlink:href="#icon-login-50" />
+			</svg>
+		</p>
 	</f:else>
 </f:if>
 <f:if condition="{numberOfLogins} >= 250">
 	<f:then>
-		<p>Badge für mindestens 250 mal eingeloggt</p>
+		<p title="250 logins">
+			<svg class="icon icon-login-250">
+				<use xlink:href="#icon-login-250" />
+			</svg>
+		</p>
 	</f:then>
 	<f:else>
-		<p class="grayedOut">Badge</p>
+		<p class="grayedOut" title="">
+			<svg class="icon icon-login-250">
+				<use xlink:href="#icon-login-250" />
+			</svg>
+		</p>
 	</f:else>
 </f:if>

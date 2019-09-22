@@ -49,6 +49,11 @@ class Address extends \FriendsOfTYPO3\TtAddress\Domain\Model\Address
     protected $oafwmTwitter;
 
     /**
+     * @var string
+     */
+    protected $oafwmOadays;
+
+    /**
      * @return integer
      */
     public function getOafwmUid()
@@ -106,5 +111,20 @@ class Address extends \FriendsOfTYPO3\TtAddress\Domain\Model\Address
     public function setOafwmTwitter($oafwmTwitter)
     {
         $this->oafwmTwitter = $oafwmTwitter;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOafwmOadays()
+    {
+        return $this->oafwmOadays;
+    }
+    /**
+     * @param integer $oafwmOadays
+     */
+    public function setOafwmOadays($oafwmOadays)
+    {
+        $this->oafwmOadays = $oafwmOadays;
     }
 }

@@ -37,6 +37,13 @@ $columns = [
             'default' => '',
             'type' => 'input',
         ]
+    ],
+    'oafwm_oadays' => [
+        'label' => 'Anzahl besuchter OA-Tage',
+        'config' => [
+            'default' => '0',
+            'type' => 'input',
+        ]
     ]
 ];
 
@@ -45,4 +52,5 @@ $columns = [
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'oafwm_groupname', '', 'after:oafwm_uid');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'oafwm_orcid', '', 'after:www');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'oafwm_twitter', '', 'after:oafwm_orcid');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'oafwm_oadays', '', 'after:oafwm_groupname');
 

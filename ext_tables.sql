@@ -2,7 +2,8 @@ CREATE TABLE tt_address (
 	oafwm_uid INT(11)                 NOT NULL,
 	oafwm_groupname VARCHAR(255) DEFAULT '' NOT NULL,
 	oafwm_twitter VARCHAR(255) DEFAULT '' NOT NULL,
-	oafwm_orcid VARCHAR(255) DEFAULT '' NOT NULL
+	oafwm_orcid VARCHAR(255) DEFAULT '' NOT NULL,
+	oafwm_oadays VARCHAR(255) DEFAULT '0' NOT NULL
 );
 
 

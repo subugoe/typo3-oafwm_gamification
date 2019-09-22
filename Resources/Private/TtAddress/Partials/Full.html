@@ -49,22 +49,24 @@
 	currentUser:'{og:getCurrentBackendUser()}',
 	pageOwnerId:'{address.oafwmUid}',
 	editedPages: '{og:getEditedPagesNames(uid:address.oafwmUid)}',
-  numberOfLogins: '{og:getNumberOfLogins(uid:address.oafwmUid)}',
-  numberOfEdits: '{og:getNumberOfEdits(uid:address.oafwmUid)}'
+  numberOfLogins:'{og:getNumberOfLogins(uid:address.oafwmUid)}',
+  numberOfEdits:'{og:getNumberOfEdits(uid:address.oafwmUid)}',
+  numberOfOADays:'{address.oafwmOadays}'
 }">
 	<f:render partial="Rewards" arguments="{
-	currentUser: currentUser,
-	pageOwnerID: pageOwnerId,
-	editedPages: editedPages,
-	numberOfLogins: numberOfLogins,
-	numberOfEdits: numberOfEdits}"/>
+	currentUser:currentUser,
+	pageOwnerID:pageOwnerId,
+	editedPages:editedPages,
+	numberOfLogins:numberOfLogins,
+	numberOfEdits:numberOfEdits,
+	numberOfOADays:numberOfOADays}"/>
 
 	<f:render partial="EditedPages" arguments="{
-	currentUser: currentUser,
-	pageOwnerID: pageOwnerId,
-	editedPages: editedPages,
-	numberOfLogins: numberOfLogins,
-	numberOfEdits: numberOfEdits}"/>
+	currentUser:currentUser,
+	pageOwnerID:pageOwnerId,
+	editedPages:editedPages,
+	numberOfLogins:numberOfLogins,
+	numberOfEdits:numberOfEdits}"/>
 </f:alias>
 
 <f:section name="content">
