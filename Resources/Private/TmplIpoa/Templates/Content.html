@@ -1,0 +1,16 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:render partial="Icons.html"/>
+
+<div class="footer-hide__helper" id="top">
+	<f:render partial="Header.html" arguments="{_all}"/>
+	<div class="headroom__helper">
+		<f:render partial="Content.html" arguments="{_all}"/>
+		<f:render partial="More.html" arguments="{_all}"/>
+		<f:render partial="Last.html" arguments="{_all}"/>
+	</div>
+</div>
+<f:render partial="Footer-hide.html" arguments="{_all}"/>
+<f:render partial="Alt-Nav.html" arguments="{_all}"/>
+</html>

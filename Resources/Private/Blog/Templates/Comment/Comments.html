@@ -1,0 +1,27 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:og="http://typo3.org/ns/Subugoe/OafwmGamification/ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+<f:alias
+	map="{user:'{og:getCurrentBackendUser()}'}">
+<f:if condition="{settings.comments.active}">
+	<h3 class="comment-title" id="comments">
+		<f:translate key="headline.comments"/>
+	</h3>
+	<f:if condition="{settings.comments.disqus._typoScriptNodeValue} !== '1'">
+		<f:if condition="{comments}">
+			<f:then>
+				<div class="comments" itemscope itemtype="http://schema.org/UserComments">
+					<f:for each="{comments}" as="comment">
+						<f:render partial="Comments/Comment" arguments="{comment: comment}"/>
+					</f:for>
+				</div>
+			</f:then>
+			<f:else>
+				<p>
+					<f:translate key="message.no_comments"/>
+				</p>
+			</f:else>
+		</f:if>
+	</f:if>
+</f:if>
+</f:alias>
