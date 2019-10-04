@@ -9,3 +9,13 @@ plugin.tx_substaff {
 
 
 
+
+
+plugin.tx_blog {
+
+    view {
+        templateRootPaths.20 = EXT:tmpl_ipoa/Resources/Private/Blog/Templates/
+        partialRootPaths.20 = EXT:tmpl_ipoa/Resources/Private/Blog/Partials/
+        layoutRootPaths.20 = EXT:tmpl_ipoa/Resources/Private/Blog/Layouts/
+    }
+}
