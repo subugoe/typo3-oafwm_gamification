@@ -100,10 +100,8 @@
 				<h4 class="tt_address-detail-social-header">Soziale Netzwerke</h4>
 
 				<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
-
 					<f:alias map="{cnetwork: '{f:format.case(mode:\'capital\', value:\'{network}\')}'}">
 						<div class="tt_address-detail-{network}" itemprop="{network}">
-
 							<f:if condition="{currentUser.uid} == {pageOwner}">
 								<f:then>
 									<f:render section="socialEntry-withoutLink" arguments="{

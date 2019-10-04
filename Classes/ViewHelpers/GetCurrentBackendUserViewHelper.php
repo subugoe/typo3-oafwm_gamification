@@ -54,6 +54,13 @@ class GetCurrentBackendUserViewHelper extends AbstractViewHelper
     protected $groupName;
 
     /**
+     * userName
+     *
+     * @var string
+     */
+    protected $userName;
+
+    /**
      * @return mixed
      */
     public function getUid()
@@ -81,6 +88,44 @@ class GetCurrentBackendUserViewHelper extends AbstractViewHelper
     }
 
     /**
+     * @return mixed
+     */
+    public function getUsername()
+    {
+        $userUid = $this->getUid();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_address');
+        $userName = $queryBuilder
+            ->select('name')
+            ->from('tt_address')
+            ->where(
+                $queryBuilder->expr()->eq('oafwm_uid', $queryBuilder->createNamedParameter($userUid, \PDO::PARAM_INT))
+            )
+            ->execute()
+            ->fetchColumn(0);
+        return $userName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        $userUid = $this->getUid();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_address');
+        $userEmail = $queryBuilder
+            ->select('email')
+            ->from('tt_address')
+            ->where(
+                $queryBuilder->expr()->eq('oafwm_uid', $queryBuilder->createNamedParameter($userUid, \PDO::PARAM_INT))
+            )
+            ->execute()
+            ->fetchColumn(0);
+        return $userEmail;
+    }
+
+    /**
      * Return array with uid and groupname of backend user
      *
      * @return array
@@ -89,7 +134,9 @@ class GetCurrentBackendUserViewHelper extends AbstractViewHelper
     {
         $user = array(
             'uid' => $this->getUid(),
-            'groupname' => $this->getGroupName()
+            'username' => $this->getUsername(),
+            'groupname' => $this->getGroupName(),
+            'email' => $this->getEmail()
         );
         return $user;
     }

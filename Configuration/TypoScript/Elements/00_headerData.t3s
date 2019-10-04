@@ -6,7 +6,7 @@ page.includeJS {
     file10 = typo3conf/ext/oafwm_gamification/Resources/Public/JavaScript/gamification.js
 }
 
-[globalVar = BE_USER|user|usergroup = 8]
+[globalVar = BE_USER|user|usergroup == 8]
 
     page.includeCSS {
         file20 = typo3conf/ext/oafwm_gamification/Resources/Public/Css/fe.css
