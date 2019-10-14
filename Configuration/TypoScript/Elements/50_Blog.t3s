@@ -9,7 +9,7 @@ plugin.tx_blog {
 }
 
 plugin.tx_blog.settings.comments.active = 0
-[globalVar = BE_USER|user|usergroup == 8] || [globalVar = BE_USER|user|admin = 1]
+[globalVar = BE_USER|user|usergroup == 8] || [globalVar = BE_USER|user|admin == 1]
   plugin.tx_blog.settings.comments.active = 1
 [end]
 
