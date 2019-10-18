@@ -1,5 +1,5 @@
 // Redirect cop members directly to the frontend
-[globalVar = BE_USER|user|usergroup == 8]
+[globalVar == BE_USER|user|usergroup == 8]
     RTE.default.preset = cop
     # the following doesn't work here, it is in COP usergroup TSconfig
 #    admPanel.enable.all = 1

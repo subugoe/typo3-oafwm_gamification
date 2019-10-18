@@ -12,10 +12,10 @@ plugin.tx_substaff {
 
 
 plugin.tx_blog {
-
     view {
-        templateRootPaths.20 = EXT:tmpl_ipoa/Resources/Private/Blog/Templates/
-        partialRootPaths.20 = EXT:tmpl_ipoa/Resources/Private/Blog/Partials/
-        layoutRootPaths.20 = EXT:tmpl_ipoa/Resources/Private/Blog/Layouts/
+        templateRootPaths.20 = EXT:oafwm_gamification/Resources/Private/Blog/Templates/
+        partialRootPaths.20 = EXT:oafwm_gamification/Resources/Private/Blog/Partials/
+        layoutRootPaths.20 = EXT:oafwm_gamification/Resources/Private/Blog/Layouts/
     }
 }
+

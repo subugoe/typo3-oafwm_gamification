@@ -1,4 +1,4 @@
-[globalVar = BE_USER|user|usergroup == 8]
+[globalVar == BE_USER|user|usergroup == 8]
     # This is absolutely necessary to view the admin panel
     config.admPanel = 1
 

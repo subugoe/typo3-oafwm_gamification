@@ -13,6 +13,10 @@
     white-space: nowrap;
 }
 
+.page-edited {
+    display: flex;
+    width: 75%;
+}
 
 @import "Tt_address";
 @import "Frontend-editing";
