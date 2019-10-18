@@ -3,25 +3,27 @@
 	  data-namespace-typo3-fluid="true">
 <f:alias
 	map="{user:'{og:getCurrentBackendUser()}'}">
-<f:if condition="{settings.comments.active}">
-	<h3 class="comment-title" id="comments">
-		<f:translate key="headline.comments"/>
-	</h3>
-	<f:if condition="{settings.comments.disqus._typoScriptNodeValue} !== '1'">
-		<f:if condition="{comments}">
-			<f:then>
-				<div class="comments" itemscope itemtype="http://schema.org/UserComments">
-					<f:for each="{comments}" as="comment">
-						<f:render partial="Comments/Comment" arguments="{comment: comment}"/>
-					</f:for>
-				</div>
-			</f:then>
-			<f:else>
-				<p>
-					<f:translate key="message.no_comments"/>
-				</p>
-			</f:else>
+	<f:if condition="{settings.comments.active}">
+		<header>
+		<h2 class="comment-title" id="comments">
+			<f:translate key="headline.comments"/>
+		</h2>
+		</header>
+		<f:if condition="{settings.comments.disqus._typoScriptNodeValue} !== '1'">
+			<f:if condition="{comments}">
+				<f:then>
+					<div class="comments" itemscope itemtype="http://schema.org/UserComments">
+						<f:for each="{comments}" as="comment">
+							<f:render partial="Comments/Comment" arguments="{comment: comment}"/>
+						</f:for>
+					</div>
+				</f:then>
+				<f:else>
+					<div class="ce-bodytext">
+						<f:translate key="message.no_comments"/>
+					</div>
+				</f:else>
+			</f:if>
 		</f:if>
 	</f:if>
-</f:if>
 </f:alias>

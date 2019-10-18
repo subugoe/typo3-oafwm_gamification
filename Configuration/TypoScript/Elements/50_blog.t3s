@@ -1,0 +1,56 @@
+plugin.tx_blog {
+
+    view {
+        templateRootPaths.20 = EXT:oafwm_gamification/Resources/Private/Blog/Templates/
+        partialRootPaths.20 = EXT:oafwm_gamification/Resources/Private/Blog/Partials/
+        layoutRootPaths.20 = EXT:oafwm_gamification/Resources/Private/Blog/Layouts/
+    }
+
+}
+
+plugin.tx_blog.settings.comments.active = 0
+[globalVar = BE_USER|user|usergroup == 8] || [globalVar = BE_USER|user|admin == 1]
+  plugin.tx_blog.settings.comments.active = 1
+[end]
+
+
+
+lib.blogForm = USER
+lib.blogForm {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = Blog
+    pluginName = CommentForm
+    vendorName    = T3G\AgencyPack
+    switchableControllerActions {
+        Comment {
+            1 = form
+            2 = addComment
+        }
+    }
+
+    view < plugin.tx_blog.view
+    persistence < plugin.tx_blog.persistence
+    settings < plugin.tx_blog.settings
+
+    stdWrap.wrap = <div class="frame blog-form">|</div>
+}
+
+lib.blogComments = USER
+lib.blogComments {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    extensionName = Blog
+    pluginName = Comments
+    vendorName    = T3G\AgencyPack
+    switchableControllerActions {
+        Comment {
+            1 = comments
+        }
+    }
+
+    view < plugin.tx_blog.view
+    persistence < plugin.tx_blog.persistence
+    settings < plugin.tx_blog.settings
+    settings.storagePid = gp:id
+
+    stdWrap.wrap = <div class="frame blog-comment">|</div>
+}
