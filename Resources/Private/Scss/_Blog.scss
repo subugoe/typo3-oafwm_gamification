@@ -11,3 +11,10 @@
 .frame.blog-comment .comments {
     padding-top: 10px;
 }
+
+input[type=submit] {
+    margin: 3px 3px 3px 0;
+    &:hover {
+        background-color: #360;
+    }
+}
