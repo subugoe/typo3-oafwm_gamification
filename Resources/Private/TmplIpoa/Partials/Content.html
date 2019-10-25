@@ -48,8 +48,21 @@
 
 	</f:if>
 
-	<f:cObject typoscriptObjectPath="lib.blogForm"/>
-	<f:cObject typoscriptObjectPath="lib.blogComments"/>
+	<f:variable name="noComment" value="0"/>
+	<f:for each="{v:iterator.explode(content:'{exclude_from_commenting}')}" as="cexclude">
+		<f:if condition="{data.uid}=={cexclude}">
+			<f:then>
+				<f:variable name="noComment" value="1"/>
+			</f:then>
+		</f:if>
+	</f:for>
+	<f:if condition="{noComment}">
+		<f:then></f:then>
+		<f:else>
+			<f:cObject typoscriptObjectPath="lib.blogForm"/>
+			<f:cObject typoscriptObjectPath="lib.blogComments"/>
+		</f:else>
+	</f:if>
 
 	<!--TYPO3SEARCH_end-->
 	<f:if condition="{SEARCH_UID} == {data.uid}">
