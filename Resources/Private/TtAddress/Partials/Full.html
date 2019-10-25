@@ -3,48 +3,6 @@
 			xmlns:v="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"
 			data-namespace-typo3-fluid="true">
 
-
-<h2 itemprop="name" class="tt_address_detail-name">
-	<f:if condition="{address.firstName}">
-		<f:then>
-			<core:contentEditable table="tt_address" field="first_name" uid="{address.uid}">
-				{address.firstName}
-			</core:contentEditable>
-		</f:then>
-		<f:else>
-			<core:contentEditable table="tt_address" field="first_name" uid="{address.uid}">
-				<span class="grayedOut">Vorname</span>
-			</core:contentEditable>
-		</f:else>
-	</f:if>
-	<f:if condition="{address.lastName}">
-		<f:then>
-			<core:contentEditable table="tt_address" field="last_name" uid="{address.uid}">
-				{address.lastName}
-			</core:contentEditable>
-		</f:then>
-		<f:else>
-			<core:contentEditable table="tt_address" field="last_name" uid="{address.uid}">
-				<span class="grayedOut">Nachname</span>
-			</core:contentEditable>
-		</f:else>
-	</f:if>
-</h2>
-
-<div class="tt_address_detail-personal" itemscope itemtype="http://schema.org/Person">
-
-	<f:if condition="{address.image}">
-			<div class="tt_address_detail-personal-image">
-				<f:image image="{address.firstImage}" width="600"
-								 alt="{img.originalResource.alt}"
-								 title="{img.originalResource.title}"
-								 additionalAttributes="{itemprop:'image'}"/>
-		</div>
-	</f:if>
-	<f:render section="content" arguments="{_all}"/>
-	<f:render section="social" arguments="{_all}"/>
-</div>
-
 <f:alias map="{
 	currentUser:'{og:getCurrentBackendUser()}',
 	pageOwnerId:'{address.oafwmUid}',
@@ -53,9 +11,66 @@
   numberOfEdits:'{og:getNumberOfEdits(uid:address.oafwmUid)}',
   numberOfOADays:'{address.oafwmOadays}'
 }">
-	<f:render partial="Rewards" arguments="{
+	<!-- editable for owner of page. Placeholder if no value present. -->
+	<h2 itemprop="name" class="tt_address_detail-name">
+		<f:if condition="{currentUser.uid} == {pageOwnerId}">
+			<f:then>
+				<f:if condition="{address.firstName}">
+					<f:then>
+						<core:contentEditable table="tt_address" field="first_name" uid="{address.uid}">
+							{address.firstName}
+						</core:contentEditable>
+					</f:then>
+					<f:else>
+						<core:contentEditable table="tt_address" field="first_name" uid="{address.uid}">
+							<span class="grayedOut">Vorname </span>
+						</core:contentEditable>
+					</f:else>
+				</f:if>
+			</f:then>
+			<f:else>
+				{address.firstName}
+			</f:else>
+		</f:if>
+
+		<f:if condition="{currentUser.uid} == {pageOwnerId}">
+			<f:then>&nbsp;
+				<f:if condition="{address.lastName}">
+					<f:then>
+						<core:contentEditable table="tt_address" field="last_name" uid="{address.uid}">
+							{address.lastName}
+						</core:contentEditable>
+					</f:then>
+					<f:else>
+						<core:contentEditable table="tt_address" field="last_name" uid="{address.uid}">
+							<span class="grayedOut">Nachname</span>
+						</core:contentEditable>
+					</f:else>
+				</f:if>
+			</f:then>
+			<f:else>
+				{address.lastName}
+			</f:else>
+		</f:if>
+	</h2>
+
+	<div class="tt_address_detail-personal" itemscope itemtype="http://schema.org/Person">
+
+		<f:if condition="{address.image}">
+			<div class="tt_address_detail-personal-image">
+				<f:image image="{address.firstImage}" width="600"
+								 alt="{img.originalResource.alt}"
+								 title="{img.originalResource.title}"
+								 additionalAttributes="{itemprop:'image'}"/>
+			</div>
+		</f:if>
+		<f:render section="content" arguments="{_all}"/>
+		<f:render section="social" arguments="{_all}"/>
+	</div>
+
+	<f:render partial="Awards" arguments="{
 	currentUser:currentUser,
-	pageOwnerID:pageOwnerId,
+	pageOwnerId:pageOwnerId,
 	editedPages:editedPages,
 	numberOfLogins:numberOfLogins,
 	numberOfEdits:numberOfEdits,
@@ -63,7 +78,7 @@
 
 	<f:render partial="EditedPages" arguments="{
 	currentUser:currentUser,
-	pageOwnerID:pageOwnerId,
+	pageOwnerId:pageOwnerId,
 	editedPages:editedPages,
 	numberOfLogins:numberOfLogins,
 	numberOfEdits:numberOfEdits}"/>
@@ -71,18 +86,26 @@
 
 <f:section name="content">
 	<div class="tt_address-detail-description" itemprop="description">
-		<f:if condition="{address.description}">
+
+		<f:if condition="{currentUser.uid} == {pageOwnerId}">
 			<f:then>
-				<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
-					{address.description}
-				</core:contentEditable>
+				<f:if condition="{address.description}">
+					<f:then>
+						<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
+							{address.description}
+						</core:contentEditable>
+					</f:then>
+					<f:else>
+						<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
+							<p class="grayedOut">
+								Platz für ein Profil
+							</p>
+						</core:contentEditable>
+					</f:else>
+				</f:if>
 			</f:then>
 			<f:else>
-				<core:contentEditable table="tt_address" field="description" uid="{address.uid}">
-					<p class="grayedOut">
-						Platz für ein Profil
-					</p>
-				</core:contentEditable>
+				{address.description}
 			</f:else>
 		</f:if>
 	</div>
@@ -90,51 +113,46 @@
 
 <f:section name="social">
 	<div class="tt_address-detail-social">
-		<f:alias
-			map="{pageOwner:'{address.oafwmUid}',
-			currentUser:'{og:getCurrentBackendUser()}'}">
+		<f:if
+			condition="{address.oafwmOrcid} || {address.oafwmTwitter}} || {currentUser.uid} == {pageOwnerId}">
 
-			<f:if
-				condition="{address.oafwmOrcid} || {address.oafwmTwitter}} || {currentUser.uid} == {pageOwner}">
+			<h4 class="tt_address-detail-social-header">Soziale Netzwerke</h4>
 
-				<h4 class="tt_address-detail-social-header">Soziale Netzwerke</h4>
-
-				<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
-					<f:alias map="{cnetwork: '{f:format.case(mode:\'capital\', value:\'{network}\')}'}">
-						<div class="tt_address-detail-{network}" itemprop="{network}">
-							<f:if condition="{currentUser.uid} == {pageOwner}">
-								<f:then>
-									<f:render section="socialEntry-withoutLink" arguments="{
+			<f:for each="{0:'orcid', 1:'twitter'}" as="network" iteration="iterator">
+				<f:alias map="{cnetwork: '{f:format.case(mode:\'capital\', value:\'{network}\')}'}">
+					<div class="tt_address-detail-{network}" itemprop="{network}">
+						<f:if condition="{currentUser.uid} == {pageOwnerId}">
+							<f:then>
+								<f:render section="socialEntry-withoutLink" arguments="{
 										network: '{network}',
 										cnetwork: '{cnetwork}',
 										entry: '{address.oafwm{cnetwork}}',
 										address: '{address}'
 								}"/>
-								</f:then>
-								<f:else>
-									<f:if condition="{address.oafwm{cnetwork}}">
-										<f:render section="socialEntry-withLink" arguments="{
+							</f:then>
+							<f:else>
+								<f:if condition="{address.oafwm{cnetwork}}">
+									<f:render section="socialEntry-withLink" arguments="{
 											twitterLink: 'https://twitter.com/{v:format.trim(content: \'{address.oafwm{cnetwork}}\', characters: \'@\')}',
 											orcidLink: 'https://orcid.org/{v:format.trim(content: \'{address.oafwm{cnetwork}}\', characters: \'https://orcid.org/\')}',
 											network: '{network}',
 											cnetwork: '{cnetwork}',
 											entry: '{address.oafwm{cnetwork}}'
 										}"/>
-									</f:if>
-								</f:else>
-							</f:if>
+								</f:if>
+							</f:else>
+						</f:if>
 
-						</div>
-					</f:alias>
+					</div>
+				</f:alias>
 
-				</f:for>
+			</f:for>
 
-			</f:if>
-		</f:alias>
+		</f:if>
 	</div>
 </f:section>
 
-<!-- only when owner not logged in -->
+<!-- link only when owner not logged in -->
 <f:section name="socialEntry-withLink">
 	<span class="social-logo">
 			<f:image
