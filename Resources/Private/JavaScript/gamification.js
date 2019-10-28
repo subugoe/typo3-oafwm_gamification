@@ -63,4 +63,17 @@ jQuery(() => {
     }
   });
 
+
+  /**
+   * Disable submit button for comments after submit
+   */
+  const disableSubmitButton = (elem) => {
+    jQuery(elem).attr('disabled', true);
+  };
+
+  jQuery('form[name=comment] .btn-primary[type=submit]').on('click', (elem) => {
+    setTimeout(() => {
+ disableSubmitButton(elem.currentTarget);
+}, 3);
+  });
 });
