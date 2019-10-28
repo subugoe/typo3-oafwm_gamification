@@ -55,12 +55,29 @@ jQuery(() => {
    */
   jQuery('.centeredImage img').each((index, elem) => {
     if (jQuery(elem).height() > jQuery(elem).width()) {
-      jQuery(elem).css({'width': '200px',
-'height': 'auto'});
+      jQuery(elem).css({
+        'width': '200px',
+        'height': 'auto'
+      });
     } else {
-      jQuery(elem).css({'height': '200px',
-'width': 'auto'});
+      jQuery(elem).css({
+        'height': '200px',
+        'width': 'auto'
+      });
     }
   });
 
+
+  /**
+   * Disable submit button for comments after submit
+   */
+  const disableSubmitButton = (elem) => {
+    jQuery(elem).attr('disabled', true);
+  };
+
+  jQuery('form[name=comment] .btn-primary[type=submit]').on('click', (elem) => {
+    setTimeout(() => {
+      disableSubmitButton(elem.currentTarget);
+    }, 3);
+  });
 });

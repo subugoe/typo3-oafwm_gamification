@@ -14,7 +14,11 @@
 
 input[type=submit] {
     margin: 3px 3px 3px 0;
+
     &:hover {
         background-color: #360;
+    }
+    &:disabled:hover {
+        background-color: #ddd;
     }
 }

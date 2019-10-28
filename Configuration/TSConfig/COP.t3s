@@ -3,7 +3,7 @@
     RTE.default.preset = cop
     # the following doesn't work here, it is in COP usergroup TSconfig
 #    admPanel.enable.all = 1
-    auth.BE.redirectToURL = ./../ueber-uns/autoren
+    #auth.BE.redirectToURL = ./../ueber-uns/autoren
 
     page.includeCSS {
         file20 = typo3conf/ext/oafwm_gamification/Resources/Public/Css/fe.css
