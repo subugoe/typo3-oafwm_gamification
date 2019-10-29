@@ -1,13 +1,13 @@
 // Redirect cop members directly to the frontend
-[globalVar == BE_USER|user|usergroup == 8]
+page.includeCSS {
+    file20 = typo3conf/ext/oafwm_gamification/Resources/Public/Css/fe.css
+}
+[usergroup = 8]
     RTE.default.preset = cop
     # the following doesn't work here, it is in COP usergroup TSconfig
 #    admPanel.enable.all = 1
     #auth.BE.redirectToURL = ./../ueber-uns/autoren
 
-    page.includeCSS {
-        file20 = typo3conf/ext/oafwm_gamification/Resources/Public/Css/fe.css
-    }
 
     page.includeJS {
         file20 = typo3conf/ext/oafwm_gamification/Resources/Public/JavaScript/fe.js

@@ -35,4 +35,9 @@ TCEFORM.tt_address {
     categories.disabled = 1
 }
 
-
+// hide page types
+[usergroup = 8]
+    TCEFORM {
+        pages.doktype.removeItems := addToList(1,3,4,6,7,254,255,199)
+    }
+[end]
