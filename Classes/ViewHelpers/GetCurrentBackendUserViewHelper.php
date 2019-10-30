@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /**
- * Class GetEditedPagesViewHelper
+ * Class GetCurrentBackendUserViewHelper
  * @package Subugoe\OafwmGamification\ViewHelpers
  */
 class GetCurrentBackendUserViewHelper extends AbstractViewHelper
