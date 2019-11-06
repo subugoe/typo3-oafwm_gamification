@@ -68,7 +68,7 @@
 		<f:render section="social" arguments="{_all}"/>
 	</div>
 
-	<f:render partial="Awards" arguments="{
+	<f:render partial="Badges" arguments="{
 	currentUser:currentUser,
 	pageOwnerId:pageOwnerId,
 	editedPages:editedPages,
@@ -114,7 +114,7 @@
 <f:section name="social">
 	<div class="tt_address-detail-social">
 		<f:if
-			condition="{address.oafwmOrcid} || {address.oafwmTwitter}} || {currentUser.uid} == {pageOwnerId}">
+			condition="<f:spaceless>{address.oafwmOrcid}</f:spaceless> != '' || <f:spaceless>{address.oafwmTwitter}</f:spaceless> != '' || {currentUser.uid} == {pageOwnerId}">
 
 			<h4 class="tt_address-detail-social-header">Soziale Netzwerke</h4>
 
@@ -131,7 +131,7 @@
 								}"/>
 							</f:then>
 							<f:else>
-								<f:if condition="{address.oafwm{cnetwork}}">
+								<f:if condition="{address.oafwm{cnetwork}} && <f:spaceless>{address.oafwm{cnetwork}}</f:spaceless>">
 									<f:render section="socialEntry-withLink" arguments="{
 											twitterLink: 'https://twitter.com/{v:format.trim(content: \'{address.oafwm{cnetwork}}\', characters: \'@\')}',
 											orcidLink: 'https://orcid.org/{v:format.trim(content: \'{address.oafwm{cnetwork}}\', characters: \'https://orcid.org/\')}',
@@ -172,7 +172,7 @@
 		title="{cnetwork}"/>
 	</span>
 	<span class="social-text">
-	<f:if condition="{entry}">
+	<f:if condition="{entry} && <f:spaceless>{entry}</f:spaceless>">
 		<f:then>
 			<core:contentEditable table="tt_address" field="oafwm_{network}" uid="{address.uid}">
 				{entry}
