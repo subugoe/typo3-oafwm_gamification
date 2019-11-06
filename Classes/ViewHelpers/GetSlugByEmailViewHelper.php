@@ -33,10 +33,10 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
 /**
- * Class GetUidByEmailUserViewHelper
+ * Class GetSlugByEmailUserViewHelper
  * @package Subugoe\OafwmGamification\ViewHelpers
  */
-class GetUidByEmailViewHelper extends AbstractViewHelper
+class GetSlugByEmailViewHelper extends AbstractViewHelper
 {
 
     /**
@@ -48,21 +48,21 @@ class GetUidByEmailViewHelper extends AbstractViewHelper
     /**
      * @return mixed
      */
-    public function getUid()
+    public function getSlug()
     {
 
         $email = $this->arguments['email'];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tt_address');
-        $uid = $queryBuilder
-            ->select('oafwm_uid')
+        $slug = $queryBuilder
+            ->select('slug')
             ->from('tt_address')
             ->where(
                 $queryBuilder->expr()->eq('email', $queryBuilder->createNamedParameter($email))
             )
             ->execute()
             ->fetchColumn(0);
-        return $uid;
+        return $slug;
     }
 
     /**
@@ -84,6 +84,6 @@ class GetUidByEmailViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        return $this->getUid();
+        return $this->getSlug();
     }
 }
