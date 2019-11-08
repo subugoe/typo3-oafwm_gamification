@@ -142,6 +142,10 @@
 .t3-frontend-editing__inline-actions span:not(:first-of-type) {
   display: none !important; }
 
+.t3-frontend-editing__full-view .btn-backend {
+	display: none !important;}
+
+
 .more__column .t3-frontend-editing__inline-actions span,
 .footer .t3-frontend-editing__inline-actions span {
   display: none !important; }
