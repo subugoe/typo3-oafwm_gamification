@@ -16,3 +16,7 @@ if (!defined('TYPO3_MODE')) {
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:oafwm_gamification/Configuration/TSConfig/Page.t3s">'
 );
 
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\FrontendEditing\\Hook\\FrontendEditingInitializationHook'] = array(
+    'className' => 'Subugoe\\OafwmGamification\\XClass\\XClassedFrontendEditingInitializationHook'
+);
