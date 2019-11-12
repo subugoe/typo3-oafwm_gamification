@@ -1,3 +1,6 @@
+/* This file is loaded inside the page iframe */
+/*  It can only change things on the page, not frontend-editing elements */
+
 .excluded-from-fe .icon-actions-open {
 	display: none !important;
 }
