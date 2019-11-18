@@ -4,6 +4,20 @@
     display: none !important;
 }
 
+.blog-form {
+    display: flex;
+
+    @include media-xl {
+        justify-content: flex-end;
+    }
+    @include media-l {
+        justify-content: flex-start;
+    }
+    @include media-sub-l {
+        justify-content: flex-start;
+    }
+}
+
 .frame.blog-form form {
     padding-top: 10px;
 }
