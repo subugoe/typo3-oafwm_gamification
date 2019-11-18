@@ -16,7 +16,15 @@ if (!defined('TYPO3_MODE')) {
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:oafwm_gamification/Configuration/TSConfig/Page.t3s">'
 );
 
-
+// Change frontend-editing toolbar
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\FrontendEditing\\Hook\\FrontendEditingInitializationHook'] = array(
     'className' => 'Subugoe\\OafwmGamification\\XClass\\XClassedFrontendEditingInitializationHook'
+);
+
+// Add download log task
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\Subugoe\OafwmGamification\Task\LogCommunityAuthorActionsTask::class] = array(
+    'extension' => 'oafwm_gamification',
+    'title' => 'LLL:EXT:oafwm_gamification/Resources/Private/Language/locallang.xlf:log_community_authors_actions',
+    'description' => 'LLL:EXT:oafwm_gamification/Resources/Private/Language/locallang.xlf:log_community_authors_actions',
+    'additionalFields' => \Subugoe\OafwmGamification\Task\LogCommunityAuthorActionsAdditionalFieldProvider::class
 );

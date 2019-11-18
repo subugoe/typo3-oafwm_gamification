@@ -1,0 +1,39 @@
+// Copy of _media.scss of tmpl_ipoa
+// breakpoints
+$break-l: 1200px;
+$break-m: 1025px;
+$break-s: 480px;
+
+@mixin media-xl {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin media-l {
+  @media (min-width: 820px) and (max-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin media-m {
+  @media (min-width: 480px) and (max-width: 820px) {
+    @content;
+  }
+}
+
+@mixin media-s {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin media-sub-l {
+  @include media-m { @content; }
+  @include media-s { @content; }
+}
+
+@mixin media-sup-m {
+  @include media-l { @content; }
+  @include media-xl { @content; }
+}
