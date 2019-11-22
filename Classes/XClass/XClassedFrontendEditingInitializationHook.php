@@ -367,11 +367,24 @@ class XClassedFrontendEditingInitializationHook
      */
     protected function loadStylesheets()
     {
-        $files = [
-            'EXT:frontend_editing/Resources/Public/Css/frontend_editing.css',
-            'EXT:backend/Resources/Public/Css/backend.css',
-            'EXT:oafwm_gamification/Resources/Public/Css/fe2.css'
-        ];
+
+        // Remove mountpoint if explicitly set in options.hideRecords.pages or is active
+        $hideList = [$this->typoScriptFrontendController->rootLine[0]['uid']];
+        $mounts = [];
+
+        // XCLASSED: If it's not admin, add special css
+        if ($GLOBALS['BE_USER']->isAdmin()) {
+            $files = [
+                'EXT:frontend_editing/Resources/Public/Css/frontend_editing.css',
+                'EXT:backend/Resources/Public/Css/backend.css'
+            ];
+        } else {
+            $files = [
+                'EXT:frontend_editing/Resources/Public/Css/frontend_editing.css',
+                'EXT:backend/Resources/Public/Css/backend.css',
+                'EXT:oafwm_gamification/Resources/Public/Css/fe.css'
+            ];
+        }
         foreach ($files as $file) {
             $this->pageRenderer->addCssFile($file);
         }
@@ -407,6 +420,12 @@ class XClassedFrontendEditingInitializationHook
         $this->pageRenderer->addJsFile(
             'EXT:frontend_editing/Resources/Public/JavaScript/Contrib/ckeditor-jquery-adapter.js'
         );
+
+        // XCLASSED: If it's not admin, add special js
+        if (!$GLOBALS['BE_USER']->isAdmin()) {
+            // Add custom js for oafwm
+            $this->pageRenderer->addJsFile('EXT:oafwm_gamification/Resources/Public/JavaScript/fe.js');
+        }
 
         $configuration = $this->getPluginConfiguration();
         if (is_array($configuration['includeJS'])) {

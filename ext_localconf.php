@@ -16,7 +16,7 @@ if (!defined('TYPO3_MODE')) {
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:oafwm_gamification/Configuration/TSConfig/Page.t3s">'
 );
 
-// Change frontend-editing toolbar
+// Change frontend-editing toolbar: Remove "To Backend"-Button
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\FrontendEditing\\Hook\\FrontendEditingInitializationHook'] = array(
     'className' => 'Subugoe\\OafwmGamification\\XClass\\XClassedFrontendEditingInitializationHook'
 );
