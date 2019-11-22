@@ -1,17 +1,10 @@
-page.includeCSS {
-    file20 = typo3conf/ext/oafwm_gamification/Resources/Public/Css/fe.css
-}
 
-
-[usergroup = 8]
+[usergroup == 8]
     # the following doesn't work here, it is in COP usergroup TSconfig
 #    admPanel.enable.all = 1
     #auth.BE.redirectToURL = ./../ueber-uns/autoren
 
     page.RTE.default.preset = cop
-    page.includeJS {
-        file20 = typo3conf/ext/oafwm_gamification/Resources/Public/JavaScript/fe.js
-    }
 
 [end]
 

@@ -1,10 +1,6 @@
-/* This file is loaded inside the page iframe */
-/*  It can only change things on the page, not frontend-editing elements */
 
-.excluded-from-fe .icon-actions-open {
+
+.btn-backend {
 	display: none !important;
 }
 
-.excluded-from-fe .t3-frontend-editing__dropzone {
-	display: none !important;
-}
