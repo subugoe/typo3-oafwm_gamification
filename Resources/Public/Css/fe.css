@@ -1,4 +1,10 @@
+.excluded-from-fe .icon-actions-open {
+	display: none !important;
+}
 
+.excluded-from-fe .t3-frontend-editing__dropzone {
+	display: none !important;
+}
 
 .btn-backend {
 	display: none !important;
