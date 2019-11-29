@@ -9,6 +9,9 @@
 			<trans-unit id="log_community_authors_actions" xml:space="preserve">
 				<source>Log community author's actions</source>
 			</trans-unit>
+			<trans-unit id="log_authors_actions" xml:space="preserve">
+				<source>Log author's actions</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
