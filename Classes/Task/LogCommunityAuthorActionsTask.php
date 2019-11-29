@@ -36,11 +36,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 
 
 
-
-
-
-
-
 /**
  * A worker downloading all comunity authors actions.
  *
