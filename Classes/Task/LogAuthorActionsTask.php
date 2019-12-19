@@ -158,7 +158,7 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
             // Create the message
             $mail->setSubject('Aktivitaeten der Community Autoren');
             $mail->setBody($authors);
-            $mail->setFrom(array('sibylle@naegle.info' => 'IPOA'));
+            $mail->setFrom(array('naegle@sub.uni-goettingen.de' => 'IPOA'));
             $mail->setTo($this->email);
             $mail->setBcc('naegle@sub.uni-goettingen.de');
             $mailsSend = $mail->send();
