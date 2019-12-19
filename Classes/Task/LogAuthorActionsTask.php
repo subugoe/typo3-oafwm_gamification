@@ -160,7 +160,7 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
             $mail->setBody($authors);
             $mail->setFrom(array('sibylle@naegle.info' => 'IPOA'));
             $mail->setTo($this->email);
-            // $mail->setBcc('naegle@sub.uni-goettingen.de');
+            $mail->setBcc('naegle@sub.uni-goettingen.de');
             $mailsSend = $mail->send();
             $success = $mailsSend > 0;
         } catch (\Exception $e) {
