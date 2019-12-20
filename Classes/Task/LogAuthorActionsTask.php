@@ -70,74 +70,163 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
         return $data;
     }
 
+    protected function getComments()
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tx_blog_domain_model_comment');
+        $data = $queryBuilder
+            ->select('tstamp', 'comment', 'email')
+            ->from('tx_blog_domain_model_comment')
+            ->orderBy('tx_blog_domain_model_comment.tstamp', 'DESC')
+            ->execute()
+            ->fetchAll(0);
+        return $data;
+    }
+
+    protected function getUidByEmail($email) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_address');
+        $uid = $queryBuilder
+            ->select('oafwm_uid')
+            ->from('tt_address')
+            ->where(
+                $queryBuilder->expr()->eq('email', $queryBuilder->createNamedParameter($email))
+            )
+            ->execute()
+            ->fetchColumn(0);
+        return $uid;
+    }
+
+    protected function getGroupByEmail($email) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('tt_address');
+        $group = $queryBuilder
+            ->select('oafwm_groupname')
+            ->from('tt_address')
+            ->where(
+                $queryBuilder->expr()->eq('email', $queryBuilder->createNamedParameter($email))
+            )
+            ->execute()
+            ->fetchColumn(0);
+        return $group;
+    }
+
 
     protected function getEmailMessage() {
-        $message = "Timestamp; Datum; Uhrzeit; NutzerID; NutzerGroup; IP; Login/Logout; ArtDerAenderung; GeaenderteSeite; GeaendertesElement; AnzahlGeaenderterZeichen;";
+        $message = "Timestamp; Datum; Uhrzeit; NutzerID; NutzerGruppe; IP; Login/Logout; ArtDerAenderung; GeaenderteSeite; GeaendertesElement; AnzahlGeaenderterZeichen; Kommentar";
         $message .= LF;
-        $tstamps = $this->getData();
+        $tstamps = array_merge($this->getComments(), $this->getData());
+        array_multisort(array_column($tstamps, 'tstamp'), SORT_DESC, $tstamps);
 
         foreach ($tstamps as $tkey => $tstamp) {
             // time and date
             $message .= $tstamp['tstamp'] . '; ';
             $time = getdate($tstamp['tstamp']);
+
             $message .= $time['mday'] .'.'. $time['mon'] .'.'. $time['year'] . '; ';
             $message .= $time['hours'] .':'. $time['minutes'] .':'. $time['seconds'] . '; ';
             // id and group
-            $message .= $tstamp['userid'] . '; ';
-            switch ($tstamp['oafwm_groupname']) {
-                case 'Badges':
-                    $message .= "1" . '; ';
-                    break;
-                case 'Level':
-                    $message .= "2" . '; ';
-                    break;
-                case 'Controlgroup':
-                    $message .= "3" . '; ';
-                    break;
+            if ($tstamp['oafwm_uid']) {
+                $message .= $tstamp['userid'] . '; ';
+            } else {
+                //  if there is no oafwm_uid, there is email
+                $message .= $this->getUidByEmail($tstamp['email']) . '; ';
             }
-            $message .= $tstamp['IP'] . '; ';
-            // login or logout
-            if ($tstamp['type'] == '255') {
-                switch ($tstamp['action']) {
-                    case '1':
-                        $message .= "1" . '; ';
+            if ($tstamp['oafwm_groupname']) {
+                switch ($tstamp['oafwm_groupname']) {
+                    case 'Badges':
+                        $message .= '1;';
                         break;
-                    case '2':
-                        $message .= "2" . '; ';
+                    case 'Level':
+                        $message .= '2;';
                         break;
-                    case '3':
-                        $message .= "3" . '; ';
+                    case 'Controlgroup':
+                        $message .= '3;';
                         break;
                 }
             } else {
-                $message .= '0' . '; ';
+                switch ($this->getGroupByEmail($tstamp['email'])) {
+                    case 'Badges':
+                        $message .= '1;';
+                        break;
+                    case 'Level':
+                        $message .= '2;';
+                        break;
+                    case 'Controlgroup':
+                        $message .= '3;';
+                        break;
+                }
             }
-            // type of change
-            if ($tstamp['type'] == 1 && $tstamp['tablename'] == 'tt_content') {
-                $message .= "1" . '; ';
-            } elseif ($tstamp['type'] == 1 && $tstamp['tablename'] == 'pages') {
-                $message .= "2" . '; ';
-            } elseif ($tstamp['type'] == 2) {
-                $message .= "3" . '; ';
-            } elseif ($tstamp['type'] == 3) {
-                $message .= "4" . '; ';
+            // IP
+            if ($tstamp['IP']) {
+                $message .= $tstamp['IP'] . '; ';
             } else {
-                $message .= "0" . '; ';
+                $message .= '0;';
+            }
+            // login or logout
+            if ($tstamp['type']) {
+                if ($tstamp['type'] == '255') {
+                    switch ($tstamp['action']) {
+                        case '1':
+                            $message .= '1;';
+                            break;
+                        case '2':
+                            $message .= '2;';
+                            break;
+                        case '3':
+                            $message .= '3;';
+                            break;
+                    }
+                } else {
+                    $message .= '0;';
+                }
+                // type of change
+                if ($tstamp['type'] == 1 && $tstamp['tablename'] == 'tt_content') {
+                    $message .= '1;';
+                } elseif ($tstamp['type'] == 1 && $tstamp['tablename'] == 'pages') {
+                    $message .= '2;';
+                } elseif ($tstamp['type'] == 2) {
+                    $message .= '3;';
+                } elseif ($tstamp['type'] == 3) {
+                    $message .= '4;';
+                } else {
+                    $message .= '0;';
+                }
+            } else {
+                $message .= '0;';
             }
             // page of change
-            $message .= $tstamp['recpid'] . '; ';
-            // element of change
-            $message .= $tstamp['recuid'] . '; ';
-            // number of changed letters
-            if ($tstamp['tablename'] == 'tt_content') {
-                $logdata = $tstamp['log_data'];
-                $start = strpos($logdata, ':"')+2;
-                $end = strpos($logdata, '";');
-                $length = $end - $start;
-                $substring = substr($logdata, $start, $length);
-                $message .= strlen($substring) . '; ';
+            if ($tstamp['recpid']) {
+                $message .= $tstamp['recpid'] . '; ';
             } else {
-                $message .= "0" . '; ';
+                $message .= '0;';
+            }
+            // element of change
+            if ($tstamp['recuid']) {
+                $message .= $tstamp['recuid'] . '; ';
+            } else {
+                $message .= '0;';
+            }
+            // number of changed letters
+            if ($tstamp['tablename']) {
+                if ($tstamp['tablename'] == 'tt_content') {
+                    $logdata = $tstamp['log_data'];
+                    $start = strpos($logdata, ':"') + 2;
+                    $end = strpos($logdata, '";');
+                    $length = $end - $start;
+                    $substring = substr($logdata, $start, $length);
+                    $message .= strlen($substring) . '; ';
+                } else {
+                    $message .= '0;';
+                }
+            } else {
+                $message .= '0;';
+            }
+            // comment
+            if ($tstamp['comment']) {
+                $message .= '1;';
+            } else {
+                $message .= '0;';
             }
             $message .= LF;
         }
