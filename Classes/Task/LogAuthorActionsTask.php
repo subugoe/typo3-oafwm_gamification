@@ -52,8 +52,9 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
+        // query more specific than needed to avoid Sibylles admin stuff to show up
         $data = $queryBuilder
-            ->select('tt_address.oafwm_uid', 'tt_address.oafwm_groupname', 'log.tstamp', 'log.userid', 'log.IP', 'log.type', 'log.action', 'log.recpid', 'log.recuid', 'log.tablename', 'log.log_data')
+            ->select('tt_address.oafwm_uid', 'tt_address.oafwm_groupname', 'log.tstamp', 'log.userid', 'log.details', 'log.IP', 'log.type', 'log.action', 'log.event_pid', 'log.recpid', 'log.recuid', 'log.tablename', 'log.log_data')
             ->from('tt_address')
             ->join(
                 'tt_address',
@@ -62,7 +63,18 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
                 $queryBuilder->expr()->eq('log.userid', $queryBuilder->quoteIdentifier('tt_address.oafwm_uid'))
             )
             ->where(
-                $queryBuilder->expr()->notLike('log.details',  $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('Exception handler') . '%'))
+                $queryBuilder->expr()->notLike('log.details',  $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('Exception handler') . '%')),
+                $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('be_users')),
+                $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('be_groups')),
+                $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('tt_address')),
+                $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('sys_file_reference')),
+                $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('tx_blog_domain_model_comment')),
+                $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('sys_template')),
+                $queryBuilder->expr()->neq('tablename', $queryBuilder->createNamedParameter('tx_wsflexslider_domain_model_image')),
+                $queryBuilder->expr()->notLike('log.details',  $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('Personal settings changed') . '%')),
+                $queryBuilder->expr()->notLike('log.details',  $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('Scheduler task') . '%')),
+                $queryBuilder->expr()->notLike('log.details',  $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('cleared the cache') . '%')),
+                $queryBuilder->expr()->notLike('log.details',  $queryBuilder->createNamedParameter('%' . $queryBuilder->escapeLikeWildcards('pb_social') . '%')),
             )
             ->orderBy('log.tstamp', 'DESC')
             ->execute()
@@ -75,7 +87,7 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_blog_domain_model_comment');
         $data = $queryBuilder
-            ->select('tstamp', 'comment', 'email')
+            ->select('tstamp', 'comment', 'email', 'parentid')
             ->from('tx_blog_domain_model_comment')
             ->orderBy('tx_blog_domain_model_comment.tstamp', 'DESC')
             ->execute()
@@ -111,102 +123,153 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
         return $group;
     }
 
+    protected function getIPByEmail($email) {
+        $uid = $this->getUidByEmail($email);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_log');
+        $IP = $queryBuilder
+            ->select('IP')
+            ->from('sys_log')
+            ->where(
+                $queryBuilder->expr()->eq('userid', $queryBuilder->createNamedParameter($uid))
+            )
+            ->execute()
+            ->fetchColumn(0);
+        return $IP;
+    }
+
 
     protected function getEmailMessage() {
-        $message = "Timestamp; Datum; Uhrzeit; NutzerID; NutzerGruppe; IP; Login/Logout; ArtDerAenderung; GeaenderteSeite; GeaendertesElement; AnzahlGeaenderterZeichen; Kommentar";
-        $message .= LF;
+        $message = "Timestamp;\tDatum;\t\tZeit;\t\tID;\tGruppe;\tIP;\t\tLogin/-out;\tArt;\tSeite;\tElement;\tAnzahlZeichen;\tKommentar";
+        $message .= "\r\n";
         $tstamps = array_merge($this->getComments(), $this->getData());
         array_multisort(array_column($tstamps, 'tstamp'), SORT_DESC, $tstamps);
 
         foreach ($tstamps as $tkey => $tstamp) {
             // time and date
-            $message .= $tstamp['tstamp'] . '; ';
-            $time = getdate($tstamp['tstamp']);
+            $message .= $tstamp['tstamp'] . ";\t";
+            $day = gmdate("d.m.Y", $tstamp['tstamp']);
+            $time = gmdate("H:i:s", $tstamp['tstamp']);
 
-            $message .= $time['mday'] .'.'. $time['mon'] .'.'. $time['year'] . '; ';
-            $message .= $time['hours'] .':'. $time['minutes'] .':'. $time['seconds'] . '; ';
+            $message .= $day . ";\t";
+            $message .= $time . ";\t";
             // id and group
             if ($tstamp['oafwm_uid']) {
-                $message .= $tstamp['userid'] . '; ';
+                $message .= $tstamp['userid'] . ";\t";
             } else {
                 //  if there is no oafwm_uid, there is email
-                $message .= $this->getUidByEmail($tstamp['email']) . '; ';
+                $message .= $this->getUidByEmail($tstamp['email']) . ";\t";
             }
             if ($tstamp['oafwm_groupname']) {
                 switch ($tstamp['oafwm_groupname']) {
                     case 'Badges':
-                        $message .= '1;';
+                        $message .= "1;\t";
                         break;
                     case 'Level':
-                        $message .= '2;';
+                        $message .= "2;\t";
                         break;
                     case 'Controlgroup':
-                        $message .= '3;';
+                        $message .= "3;\t";
                         break;
                 }
             } else {
                 switch ($this->getGroupByEmail($tstamp['email'])) {
                     case 'Badges':
-                        $message .= '1;';
+                        $message .= "1;\t";
                         break;
                     case 'Level':
-                        $message .= '2;';
+                        $message .= "2;\t";
                         break;
                     case 'Controlgroup':
-                        $message .= '3;';
+                        $message .= "3;\t";
                         break;
                 }
             }
             // IP
             if ($tstamp['IP']) {
-                $message .= $tstamp['IP'] . '; ';
+                $message .= $tstamp['IP'] . ";\t";
             } else {
-                $message .= '0;';
+                $message .= $this->getIPByEmail($tstamp['email']) . ";\t";
             }
             // login or logout
             if ($tstamp['type']) {
                 if ($tstamp['type'] == '255') {
                     switch ($tstamp['action']) {
                         case '1':
-                            $message .= '1;';
+                            $message .= "1;\t\t";
                             break;
                         case '2':
-                            $message .= '2;';
+                            $message .= "2;\t\t";
                             break;
                         case '3':
-                            $message .= '3;';
+                            $message .= "3;\t\t";
                             break;
+                        default:
+                            $message .= "error;\t";
                     }
                 } else {
-                    $message .= '0;';
+                    $message .= "0;\t\t";
                 }
                 // type of change
                 if ($tstamp['type'] == 1 && $tstamp['tablename'] == 'tt_content') {
-                    $message .= '1;';
+                    if (strpos($tstamp['details'], 'Moved')) {
+                        $message .= "CM;\t"; // content element moved
+                    } elseif (strpos($tstamp['details'], 'deleted')) {
+                        $message .= "CD;\t"; // content element deleted
+                    } elseif (strpos($tstamp['details'], 'updated')) {
+                        $message .= "CU;\t"; // content element updated
+                    } elseif (strpos($tstamp['details'], 'inserted')) {
+                        $message .= "CI;\t"; // content element inserted
+                    } else {
+                        $message .= "error" . $tstamp['details'];
+                    }
                 } elseif ($tstamp['type'] == 1 && $tstamp['tablename'] == 'pages') {
-                    $message .= '2;';
+                    if (strpos($tstamp['details'], 'oved record')) {
+                        // "Moved" is first word and would result in 0, therefor "oved"
+                        $message .= "PM;\t"; // element on page moved
+                    } elseif (strpos($tstamp['details'], 'deleted')) {
+                        $message .= "PD;\t"; // element on page deleted
+                    } elseif (strpos($tstamp['details'], 'updated')) {
+                        $message .= "PU;\t"; // page updated
+                    } elseif (strpos($tstamp['details'], 'inserted on')) {
+                        $message .= "PI;\t"; // inserted element on page
+                    } else {
+                        $message .= "Error" . $tstamp['details'];
+                    }
                 } elseif ($tstamp['type'] == 2) {
-                    $message .= '3;';
-                } elseif ($tstamp['type'] == 3) {
-                    $message .= '4;';
+                    if (strpos($tstamp['details'], 'ploading file')) {
+                        // "Uploaded" is first word and would result in 0, therefor "ploaded"
+                        $message .= "FU;\t"; // file uploaded
+                    } elseif (strpos($tstamp['details'], 'ile renamed')) {
+                        // "File renamed" is first word and would result in 0, therefor "ile renamed"
+                        $message .= "FR;\t"; // file renamed
+                    } elseif (strpos($tstamp['details'], 'irectory')) {
+                        // "Directory" is first word and would result in 0, therefor "irectory"
+                        $message .= "FD;\t"; // directory created
+                    } else {
+                        $message .= "error" . $tstamp['details'];
+                    }
                 } else {
-                    $message .= '0;';
+                    $message .= "0;\t";
                 }
             } else {
-                $message .= '0;';
+                $message .= "0;\t\t0;\t";
             }
             // page of change
-            if ($tstamp['recpid']) {
-                $message .= $tstamp['recpid'] . '; ';
+            if ($tstamp['parentid']) {
+                $message .= $tstamp['parentid'] . ";\t";
+            } elseif  ($tstamp['event_pid'] != -1) {
+                $message .= $tstamp['event_pid'] . ";\t";
             } else {
-                $message .= '0;';
+                $message .= "0;\t";
             }
             // element of change
             if ($tstamp['recuid']) {
-                $message .= $tstamp['recuid'] . '; ';
+                $message .= $tstamp['recuid'] . ";\t";
             } else {
-                $message .= '0;';
+                $message .= "0;\t";
             }
+            $message .= "\t";
             // number of changed letters
             if ($tstamp['tablename']) {
                 if ($tstamp['tablename'] == 'tt_content') {
@@ -215,20 +278,21 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
                     $end = strpos($logdata, '";');
                     $length = $end - $start;
                     $substring = substr($logdata, $start, $length);
-                    $message .= strlen($substring) . '; ';
+                    $message .= strlen($substring) . ";\t";
                 } else {
-                    $message .= '0;';
+                    $message .= "0;\t";
                 }
             } else {
-                $message .= '0;';
+                $message .= "0;\t";
             }
+            $message .= "\t";
             // comment
             if ($tstamp['comment']) {
-                $message .= '1;';
+                $message .= "1;\t";
             } else {
-                $message .= '0;';
+                $message .= "0;\t";
             }
-            $message .= LF;
+            $message .= "\r\n";
         }
         return $message;
     }
