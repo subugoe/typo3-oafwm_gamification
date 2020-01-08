@@ -138,11 +138,52 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
         return $IP;
     }
 
+    protected function createUniqMultidimensionalArray($array, $key) {
+        $temp_array = array();
+        $i = 0;
+        $key_array = array();
+        foreach($array as $val) {
+            if (!in_array($val[$key], $key_array)) {
+                $key_array[$i] = $val[$key];
+                $temp_array[$i] = $val;
+            }
+            $i++;
+        }
+        return $temp_array;
+    }
+
+    protected function getHistByTimestamp($tstamp) {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('sys_history');
+        $hist = $queryBuilder
+            ->select('history_data')
+            ->from('sys_history')
+            ->where(
+                $queryBuilder->expr()->eq('tstamp', $queryBuilder->createNamedParameter($tstamp))
+            )
+            ->execute()
+            ->fetchColumn(0);
+        return $hist;
+    }
+
+    protected function getLengthDifferenceOfRecords($tstamp)
+    {
+        $data = $this->getHistByTimestamp($tstamp);
+        if (strpos($data, 'oldRecord') === false) {
+            // change not interesting
+            return 0;
+        }
+        preg_match('/oldRecord":{"bodytext":"(.*)(","|"},|"}})/U', $data, $old);
+        preg_match('/newRecord":{"bodytext":"(.*)(","|"},|"}})/U', $data, $new);
+
+        return ((int)strlen($new[1])-(int)strlen($old[1]));
+    }
 
     protected function getEmailMessage() {
         $message = "Timestamp;\tDatum;\t\tZeit;\t\tID;\tGruppe;\tIP;\t\tLogin/-out;\tArt;\tSeite;\tElement;\tAnzahlZeichen;\tKommentar";
         $message .= "\r\n";
-        $tstamps = array_merge($this->getComments(), $this->getData());
+        $tstampsm = array_merge($this->getComments(), $this->getData());
+        $tstamps = $this->createUniqMultidimensionalArray($tstampsm, 'tstamp');
         array_multisort(array_column($tstamps, 'tstamp'), SORT_DESC, $tstamps);
 
         foreach ($tstamps as $tkey => $tstamp) {
@@ -212,7 +253,8 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
                 }
                 // type of change
                 if ($tstamp['type'] == 1 && $tstamp['tablename'] == 'tt_content') {
-                    if (strpos($tstamp['details'], 'Moved')) {
+                    if (strpos($tstamp['details'], 'oved')) {
+                        // "Moved" is first word and would result in 0, therefor "oved"
                         $message .= "CM;\t"; // content element moved
                     } elseif (strpos($tstamp['details'], 'deleted')) {
                         $message .= "CD;\t"; // content element deleted
@@ -221,12 +263,12 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
                     } elseif (strpos($tstamp['details'], 'inserted')) {
                         $message .= "CI;\t"; // content element inserted
                     } else {
-                        $message .= "error" . $tstamp['details'];
+                        $message .= "Error on element" . $tstamp['details'];
                     }
                 } elseif ($tstamp['type'] == 1 && $tstamp['tablename'] == 'pages') {
                     if (strpos($tstamp['details'], 'oved record')) {
                         // "Moved" is first word and would result in 0, therefor "oved"
-                        $message .= "PM;\t"; // element on page moved
+                        $message .= "PM;\t"; // page moved
                     } elseif (strpos($tstamp['details'], 'deleted')) {
                         $message .= "PD;\t"; // element on page deleted
                     } elseif (strpos($tstamp['details'], 'updated')) {
@@ -234,7 +276,7 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
                     } elseif (strpos($tstamp['details'], 'inserted on')) {
                         $message .= "PI;\t"; // inserted element on page
                     } else {
-                        $message .= "Error" . $tstamp['details'];
+                        $message .= "Error on page" . $tstamp['details'];
                     }
                 } elseif ($tstamp['type'] == 2) {
                     if (strpos($tstamp['details'], 'ploading file')) {
@@ -273,12 +315,7 @@ class LogAuthorActionsTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask implem
             // number of changed letters
             if ($tstamp['tablename']) {
                 if ($tstamp['tablename'] == 'tt_content') {
-                    $logdata = $tstamp['log_data'];
-                    $start = strpos($logdata, ':"') + 2;
-                    $end = strpos($logdata, '";');
-                    $length = $end - $start;
-                    $substring = substr($logdata, $start, $length);
-                    $message .= strlen($substring) . ";\t";
+                    $message .= $this->getLengthDifferenceOfRecords($tstamp['tstamp']) . "\t";
                 } else {
                     $message .= "0;\t";
                 }
