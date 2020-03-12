@@ -105,7 +105,9 @@ class XClassedFrontendEditingInitializationHook
 
         // If this is TYPO3 9 and site configuration was found
         if (VersionNumberUtility::convertVersionNumberToInteger(TYPO3_branch) > 9000000
+            // @extensionScannerIgnoreLine
             && isset($GLOBALS['TYPO3_REQUEST'])
+            // @extensionScannerIgnoreLine
             && $GLOBALS['TYPO3_REQUEST']->getAttribute('site') instanceof Site
             && $this->isFrontendEditingEnabled($GLOBALS['TSFE'])
         ) {
@@ -258,7 +260,8 @@ class XClassedFrontendEditingInitializationHook
         ) : null;
 
         // Define the window size of the popups within the RTE
-        $rtePopupWindowSize = $GLOBALS['BE_USER']->getTSConfigVal('options.rte.popupWindowSize');
+        $rtePopupWindowSize = $GLOBALS['BE_USER']->getTSConfig()['options.']['rte.']['popupWindowSize'];
+
         if (!empty($rtePopupWindowSize)) {
             list(, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
         }
@@ -279,8 +282,21 @@ class XClassedFrontendEditingInitializationHook
         $this->pageRenderer = new PageRenderer();
         $this->pageRenderer->setBaseUrl($baseUrl);
         $this->pageRenderer->setCharset('utf-8');
-        $this->pageRenderer->addMetaTag('<meta name="viewport" content="width=device-width, initial-scale=1">');
-        $this->pageRenderer->addMetaTag('<meta http-equiv="X-UA-Compatible" content="IE=edge">');
+
+        $typo3VersionNumber = VersionNumberUtility::convertVersionNumberToInteger(
+            VersionNumberUtility::getNumericTypo3Version()
+        );
+
+        if ($typo3VersionNumber < 9000000) {
+            // @extensionScannerIgnoreLine
+            $this->pageRenderer->addMetaTag('<meta name="viewport" content="width=device-width, initial-scale=1">');
+            // @extensionScannerIgnoreLine
+            $this->pageRenderer->addMetaTag('<meta http-equiv="X-UA-Compatible" content="IE=edge">');
+        } else {
+            $this->pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
+            $this->pageRenderer->setMetaTag('http-equiv', 'X-UA-Compatible', 'IE=edge');
+        }
+
         $this->pageRenderer->setHtmlTag('<!DOCTYPE html><html lang="en">');
 
         $resourcePath = 'EXT:frontend_editing/Resources/Public/';
@@ -300,6 +316,9 @@ class XClassedFrontendEditingInitializationHook
             window.F.setEndpointUrl(' . GeneralUtility::quoteJSvalue($endpointUrl) . ');
             window.F.setBESessionId(' . GeneralUtility::quoteJSvalue($this->getBeSessionKey()) . ');
             window.F.setTranslationLabels(' . json_encode($this->getLocalizedFrontendLabels()) . ');
+            window.F.setDisableModalOnNewCe(' .
+                (int)ExtensionManagerConfigurationService::getSettings()['enablePlaceholders'] .
+            ');
             window.FrontendEditingMode = true;
             window.TYPO3.settings = {
                 Textarea: {
@@ -332,7 +351,7 @@ class XClassedFrontendEditingInitializationHook
             'loadingIcon' => $this->iconFactory->getIcon('spinner-circle-dark', Icon::SIZE_LARGE)->render(),
             'mounts' => $this->getBEUserMounts(),
             'showHiddenItemsUrl' => $requestUrl . '&show_hidden_items=' . $this->showHiddenItems(),
-            'seoProviderData' => $this->getSeoProviderData($this->typoScriptFrontendController->id)
+            'seoProviderData' => $this->getSeoProviderData((int)$this->typoScriptFrontendController->id)
         ]);
 
         // Assign the content
@@ -340,6 +359,7 @@ class XClassedFrontendEditingInitializationHook
         $parentObject->content = $this->pageRenderer->render();
         $parentObject->setAbsRefPrefix();
         // Remove any preview info
+        // @extensionScannerIgnoreLine
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']);
     }
 
@@ -367,11 +387,6 @@ class XClassedFrontendEditingInitializationHook
      */
     protected function loadStylesheets()
     {
-
-        // Remove mountpoint if explicitly set in options.hideRecords.pages or is active
-        $hideList = [$this->typoScriptFrontendController->rootLine[0]['uid']];
-        $mounts = [];
-
         // XCLASSED: If it's not admin, add special css
         if ($GLOBALS['BE_USER']->isAdmin()) {
             $files = [
@@ -395,8 +410,20 @@ class XClassedFrontendEditingInitializationHook
      */
     protected function loadJavascriptResources()
     {
-        $this->pageRenderer->loadJquery();
+        $typo3VersionNumber = VersionNumberUtility::convertVersionNumberToInteger(
+            VersionNumberUtility::getNumericTypo3Version()
+        );
+
+        if ($typo3VersionNumber < 9000000) {
+            // @extensionScannerIgnoreLine
+            $this->pageRenderer->loadJquery();
+        } else {
+            $this->pageRenderer->addJsFile(
+                'EXT:core/Resources/Public/JavaScript/Contrib/jquery/jquery.js'
+            );
+        }
         $this->pageRenderer->loadRequireJs();
+
         $this->pageRenderer->addRequireJsConfiguration(
             [
                 'shim' => [
@@ -556,6 +583,7 @@ class XClassedFrontendEditingInitializationHook
     {
         if ($this->isSiteConfigurationFound) {
             /** @var Site $site */
+            // @extensionScannerIgnoreLine
             $site = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
 
             try {
@@ -677,7 +705,9 @@ class XClassedFrontendEditingInitializationHook
         } else {
             $allowedMounts = $beUSER->returnWebmounts();
 
-            if ($pidList = $beUSER->getTSConfigVal('options.hideRecords.pages')) {
+            $hideRecordsPages = $beUSER->getTSConfig()['options.']['hideRecords.']['pages'];
+
+            if ($pidList = $hideRecordsPages) {
                 $hideList += GeneralUtility::intExplode(',', $pidList, true);
             }
 
@@ -703,7 +733,16 @@ class XClassedFrontendEditingInitializationHook
 
         // Populate mounts with domains
         foreach ($mounts as $uid => &$mount) {
-            $mount['domain'] = BackendUtility::firstDomainRecord([$mount]);
+            $typo3VersionNumber = VersionNumberUtility::convertVersionNumberToInteger(
+                VersionNumberUtility::getNumericTypo3Version()
+            );
+
+            if ($typo3VersionNumber < 9004000) {
+                // @extensionScannerIgnoreLine
+                $mount['domain'] = BackendUtility::firstDomainRecord([$mount]);
+            } else {
+                $mount['domain'] = BackendUtility::getViewDomain($mount);
+            }
         }
 
         return $mounts;
@@ -716,9 +755,17 @@ class XClassedFrontendEditingInitializationHook
      */
     protected function getContentItems(): array
     {
-        /** @var NewContentElementController $contentController */
-        $contentController = GeneralUtility::makeInstance(NewContentElementController::class);
-        $wizardItems = $contentController->wizardArray();
+        $contentController = $this->getNewContentElementController();
+
+        // Compatibility with TYPO3 8
+        $typo3VersionNumber = VersionNumberUtility::convertVersionNumberToInteger(
+            VersionNumberUtility::getNumericTypo3Version()
+        );
+
+        $wizardItems = ($typo3VersionNumber < 9002000)
+            ? $contentController->wizardArray()
+            : $contentController->getWizards();
+
         $this->wizardItemsHook($wizardItems, $contentController);
 
         $contentItems = [];
@@ -752,16 +799,12 @@ class XClassedFrontendEditingInitializationHook
         // Hook for manipulating wizardItems, wrapper, onClickEvent etc.
         if (is_array($newContentElement['wizardItemsHook'])) {
             foreach ($newContentElement['wizardItemsHook'] as $classData) {
-                $hookObject = GeneralUtility::getUserObj($classData);
+                $hookObject = GeneralUtility::makeInstance($classData);
                 if (!$hookObject instanceof NewContentElementWizardHookInterface) {
                     throw new \UnexpectedValueException(
                         $classData . ' must implement interface ' . NewContentElementWizardHookInterface::class,
                         1227834741
                     );
-                }
-                // Check if ID is set
-                if (!$contentController->id) {
-                    $contentController->id = $this->typoScriptFrontendController->id;
                 }
 
                 $hookObject->manipulateWizardItems($wizardItems, $contentController);
@@ -930,5 +973,54 @@ class XClassedFrontendEditingInitializationHook
         $showHiddenItems = ($showHiddenItems === $defaultState) ? 0 : $defaultState;
 
         return $showHiddenItems;
+    }
+
+    /**
+     * Return instance of NewContentElementController
+     * For TYPO3 >= 9 init NewContentElementController with given server request
+     *
+     * @return NewContentElementController|\TYPO3\CMS\FrontendEditing\Backend\Controller\ContentElement\NewContentElementController
+     */
+    protected function getNewContentElementController()
+    {
+        $typo3VersionNumber = VersionNumberUtility::convertVersionNumberToInteger(
+            VersionNumberUtility::getNumericTypo3Version()
+        );
+        if ($typo3VersionNumber > 9000000) {
+            $contentController = GeneralUtility::makeInstance(
+                \TYPO3\CMS\FrontendEditing\Backend\Controller\ContentElement\NewContentElementController::class
+            );
+            if ($typo3VersionNumber > 10000000) {
+                $contentController->wizardAction(
+                    $this->requestWithSimulatedQueryParams()
+                );
+            } else {
+                $contentController->init(
+                    $this->requestWithSimulatedQueryParams()
+                );
+            }
+        } else {
+            $contentController = GeneralUtility::makeInstance(
+                NewContentElementController::class
+            );
+        }
+
+        return $contentController;
+    }
+
+    /**
+     * Simulate request with "id" and "sys_language_uid" parameters for NewContentElementController
+     *
+     * @return \Psr\Http\Message\ServerRequestInterface
+     */
+    protected function requestWithSimulatedQueryParams(): \Psr\Http\Message\ServerRequestInterface
+    {
+        $languageUid = GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
+
+        // @extensionScannerIgnoreLine
+        return $GLOBALS['TYPO3_REQUEST']->withQueryParams([
+            'id' => (int)$this->typoScriptFrontendController->id,
+            'sys_language_uid' => $languageUid,
+        ]);
     }
 }
