@@ -1,7 +1,0 @@
-[globalVar == BE_USER|user|usergroup == 8]
-    # This is absolutely necessary to view the admin panel
-    config.admPanel = 1
-
-[global]
-
-config.frontend_editing = 1

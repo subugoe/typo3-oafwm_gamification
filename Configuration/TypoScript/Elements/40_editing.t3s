@@ -1,5 +1,0 @@
-stdWrap {
-
-    # If this is set all empty tags are stripped, unless a list of tags is provided below.
-    HTMLparser.stripEmptyTags = 1
-}

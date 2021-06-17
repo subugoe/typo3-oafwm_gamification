@@ -1,7 +1,0 @@
-page.includeCSS {
-    file10 = typo3conf/ext/oafwm_gamification/Resources/Public/Css/gamification.css
-}
-
-page.includeJS {
-    file10 = typo3conf/ext/oafwm_gamification/Resources/Public/JavaScript/gamification.js
-}
